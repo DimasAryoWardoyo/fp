@@ -10,4 +10,8 @@ class AgendaController extends Controller
     {
         return view('agenda.index');
     }
+    public function detail()
+    {
+        return view('agenda.detail');
+    }
 }

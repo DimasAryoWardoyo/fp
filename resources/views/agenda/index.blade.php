@@ -10,36 +10,52 @@
             <div class="dashboard-content">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card mb-2">
+                        <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
-                                <div class="dashboard-card-subtitle mb-2">
-                                    Agenda
-                                    @can('admin')
-                                    <button class="btn btn-warning float-end ">Tambah Agenda <i class="fa fa-plus-square"
-                                            aria-hidden="true"></i></button>
-                                    @endcan
-                                    <button class="btn btn-warning float-end mr-3">Kehadiran <i class="fa fa-address-card"
-                                            aria-hidden="true"></i>
-                                    </button>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5>Agenda</h5>
+                                    <div>
+                                        <button class="btn btn-warning me-2">
+                                            Kehadiran <i class="fa fa-address-card" aria-hidden="true"></i>
+                                        </button>
+                                        @can('admin')
+                                            <button class="btn btn-warning">
+                                                Tambah Agenda <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                            </button>
+                                        @endcan
+                                    </div>
                                 </div>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Tanggal</th>
-                                            <th scope="col">Agenda</th>
-                                            <th scope="col">Lokasi</th>
-                                            <th scope="col">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>10-14-2025</td>
-                                            <td>Rapat anggota Pemilu</td>
-                                            <td>Condongcatur</td>
-                                            <td><button class="btn btn-success">detil</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-secondary">
+                                            <tr class="text-center">
+                                                <th scope="col" style="width: 20%;">Tanggal</th>
+                                                <th scope="col" style="width: 40%;">Agenda</th>
+                                                <th scope="col" style="width: 30%;">Lokasi</th>
+                                                <th scope="col" style="width: 10%;">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-nowrap text-center">10-14-2025 (12.00)</td>
+                                                <td class="text-truncate"
+                                                    style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    Rapat anggota Pemilu dengan bapak presiden Jokowidodo aja deh
+                                                </td>
+                                                <td class="text-truncate text-center"
+                                                    style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    Condongcatur
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-success btn-sm">
+                                                        Detil <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

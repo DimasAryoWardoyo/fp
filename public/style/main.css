@@ -12280,4 +12280,40 @@ footer p {
   opacity: 0.5;
 }
 
+.struktur {
+  text-align: center;
+  position: relative;
+}
+
+.struktur .card {
+  display: inline-block;
+  padding: 10px;
+  width: 200px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 2px solid #007bff;
+}
+
+.line {
+  width: 2px;
+  height: 30px;
+  background: #007bff;
+  margin: auto;
+}
+
+.line-horizontal {
+  width: 60px;
+  height: 2px;
+  background: #007bff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.row .col-md-4 {
+  display: flex;
+  justify-content: center;
+}
+
 /*# sourceMappingURL=main.css.map */
