@@ -68,8 +68,9 @@
                             Informasi Keuangan
                         </a>
 
-                        <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
-                            Agenda
+                        <a href="{{ route('agenda.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('agenda') ? 'active' : '' }}">
+                            Agenda Rapat
                         </a>
 
                         <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">

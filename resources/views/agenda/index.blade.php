@@ -4,8 +4,8 @@
     <div class="section-content section-dashboard-home">
         <div class="container-fluid">
             <div class="dashboard-heading">
-                <h2 class="dashboard-title">Profile</h2>
-                <p class="dashboard-subtitle">Kelola Identitas Anda Denang Benar!</p>
+                <h2 class="dashboard-title">Agenda</h2>
+                <p class="dashboard-subtitle">Kelola dan Hadiri Agenda dengan Baik!</p>
             </div>
             <div class="dashboard-content">
                 <div class="row">
@@ -15,13 +15,13 @@
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5>Agenda</h5>
                                     <div>
-                                        <button class="btn btn-warning me-2">
+                                        <a href="#" class="btn btn-warning me-2">
                                             Kehadiran <i class="fa fa-address-card" aria-hidden="true"></i>
-                                        </button>
+                                        </a>
                                         @can('admin')
-                                            <button class="btn btn-warning">
+                                            <a href="{{ route('agenda.create') }}" class="btn btn-warning">
                                                 Tambah Agenda <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                            </button>
+                                            </a>
                                         @endcan
                                     </div>
                                 </div>
@@ -33,29 +33,42 @@
                                                 <th scope="col" style="width: 20%;">Tanggal</th>
                                                 <th scope="col" style="width: 40%;">Agenda</th>
                                                 <th scope="col" style="width: 30%;">Lokasi</th>
-                                                <th scope="col" style="width: 10%;">Aksi</th>
+                                                <th scope="col" style="width: 10%;">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="text-nowrap text-center">10-14-2025 (12.00)</td>
-                                                <td class="text-truncate"
-                                                    style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                    Rapat anggota Pemilu dengan bapak presiden Jokowidodo aja deh
-                                                </td>
-                                                <td class="text-truncate text-center"
-                                                    style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                    Condongcatur
-                                                </td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-success btn-sm">
-                                                        Detil <i class="fa fa-eye"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            @foreach ($agenda as $agenda)
+                                                <tr>
+                                                    <td class="text-nowrap text-center">
+                                                        {{ $agenda->waktu_mulai->format('d-m-Y (H:i)') }}
+                                                    </td>
+                                                    <td class="text-truncate"
+                                                        style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                        {{ $agenda->nama_agenda }}
+                                                    </td>
+                                                    <td class="text-truncate text-center"
+                                                        style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                        {{ $agenda->lokasi }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('agenda.show', $agenda->id) }}"
+                                                            class="btn btn-success btn-sm">
+                                                            Detil <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!-- Jika tidak ada agenda -->
+                                @if($agenda === null)
+                                    <p>Agenda tidak ditemukan.</p>
+                                @else
+                                    {{-- tampilkan agenda --}}
+                                @endif
+
                             </div>
                         </div>
                     </div>
