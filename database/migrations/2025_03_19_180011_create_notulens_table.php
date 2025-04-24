@@ -13,7 +13,10 @@ return new class extends Migration {
         Schema::create('notulens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('agenda_id');
-            $table->text('notulen');
+            $table->text('notulen')->nullable();
+            $table->text('pembicara');
+            $table->text('poin_pembahasan');
+            $table->text('kesimpulan')->nullable();
             $table->timestamps();
 
             $table->foreign('agenda_id')->references('id')->on('agendas')->onDelete('cascade');

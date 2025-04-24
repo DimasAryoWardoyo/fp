@@ -41,12 +41,13 @@
                         class="list-group-item list-group-item-action {{ request()->routeIs('identitas.index') ? 'active' : '' }}">
                         Profile
                     </a>
+                    <a href="{{ route('agenda.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->is('agenda*') ? 'active' : '' }}">
+                        Agenda Rapat
+                    </a>
+
                     {{-- Anggota Layouts --}}
                     @can('anggota')
-                        <a href="{{ route('agenda.index') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('agenda') ? 'active' : '' }}">
-                            Agenda Rapat
-                        </a>
                         <a href="{{ route('struktur.index') }}"
                             class="list-group-item list-group-item-action {{ request()->is('struktur') ? 'active' : '' }}">
                             Struktur Karang Taruna
@@ -67,12 +68,6 @@
                             class="list-group-item list-group-item-action {{ request()->is('admin/testimonials') ? 'active' : '' }}">
                             Informasi Keuangan
                         </a>
-
-                        <a href="{{ route('agenda.index') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('agenda') ? 'active' : '' }}">
-                            Agenda Rapat
-                        </a>
-
                         <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
                             Kelola Anggota
                         </a>

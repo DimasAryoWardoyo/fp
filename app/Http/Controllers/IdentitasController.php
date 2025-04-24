@@ -15,7 +15,7 @@ class IdentitasController extends Controller
 
     public function create()
     {
-        $users = User::doesntHave('identitas')->get(); // Hanya user yang belum punya identitas
+        $users = User::doesntHave('identitas')->get();
         return view('identitas.create', compact('users'));
     }
 
@@ -36,11 +36,19 @@ class IdentitasController extends Controller
 
     public function edit(Identitas $identitas)
     {
+        if (auth()->user()->id !== $identitas->user_id) {
+            abort(403);
+        }
+
         return view('identitas.edit', compact('identitas'));
     }
 
     public function update(Request $request, Identitas $identitas)
     {
+        if (auth()->user()->id !== $identitas->user_id) {
+            abort(403);
+        }
+
         $request->validate([
             'no_whatsapp' => 'required|string|max:20',
             'tanggal_lahir' => 'required|date',
@@ -55,6 +63,10 @@ class IdentitasController extends Controller
 
     public function destroy(Identitas $identitas)
     {
+        if (auth()->user()->id !== $identitas->user_id) {
+            abort(403);
+        }
+
         $identitas->delete();
         return redirect()->route('identitas.index')->with('success', 'Identitas berhasil dihapus');
     }

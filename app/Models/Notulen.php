@@ -7,13 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notulen extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'agenda_id',
-        'notulen'
+        'pembicara',
+        'poin_pembahasan',
+        'notulen',
     ];
+
 
     public function agenda()
     {
         return $this->belongsTo(Agenda::class);
     }
 }
+
