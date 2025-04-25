@@ -62,8 +62,13 @@
                             Informassi Keuangan
                         </a> --}}
                     @endcan
+
                     {{-- Admin Layouts --}}
                     @can('admin')
+                        <a href="{{ url('/broadcast') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('broadcast') ? 'active' : '' }}">
+                            Broadcast WA
+                        </a>
                         <a href="#"
                             class="list-group-item list-group-item-action {{ request()->is('admin/testimonials') ? 'active' : '' }}">
                             Informasi Keuangan

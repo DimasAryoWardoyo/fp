@@ -63,7 +63,23 @@
                                         </tr>
                                         <tr>
                                             <th>Status</th>
-                                            <td>{{ Auth::user()->identitas->status ?? 'Belum diisi' }}</td>
+                                            <td>
+                                                {{ Auth::user()->identitas->status ?? 'Belum diisi' }}
+
+                                                @if(Auth::user()->identitas && Auth::user()->identitas->status == 'tidak')
+                                                    <div class="dropdown d-inline ms-2">
+                                                        <button class="btn float-end btn-sm btn-info dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Alasan
+                                                        </button>
+                                                        <ul class="dropdown-menu bg-warning">
+                                                            <li class="dropdown-item">
+                                                                {{ Auth::user()->identitas->alasan ?? 'Tidak ada alasan' }}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

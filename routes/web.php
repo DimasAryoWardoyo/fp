@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BroadcastController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -46,6 +47,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit-profile', [UserController::class, 'editProfile'])->name('user.edit-profile');
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('user.update-profile');
 
+    Route::get('/identitas/{identitas}/edit', [IdentitasController::class, 'edit'])->name('identitas.edit');
+    Route::put('/identitas/{identitas}', [IdentitasController::class, 'update'])->name('identitas.update');
+
     // Identitas
     Route::resource('identitas', IdentitasController::class)->except(['show']);
 
@@ -82,7 +86,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/notulen', [NotulenController::class, 'store'])->name('notulen.store');
     Route::get('/notulen/{notulen}/edit', [NotulenController::class, 'edit'])->name('notulen.edit');
     Route::put('/notulen/{notulen}', [NotulenController::class, 'update'])->name('notulen.update');
+
+
 });
+
+Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.form');
+Route::post('/broadcast/send', [BroadcastController::class, 'send'])->name('broadcast.send');
 
 // ====================
 // Route Khusus Anggota
