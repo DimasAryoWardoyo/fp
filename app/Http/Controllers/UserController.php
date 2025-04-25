@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -33,5 +35,100 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('identitas.index')->with('success', 'Profil berhasil diperbarui');
+    }
+    // Daftar semua user (hanya admin)
+    public function index()
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
+    }
+
+    // Tampilkan form edit user
+    public function edit($id)
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    // Update user
+    public function update(Request $request, $id)
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role' => 'required|in:admin,user',
+            'password' => 'nullable|min:6|confirmed',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diperbarui');
+    }
+
+    public function create()
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        return view('admin.users.create');
+    }
+
+    public function store(Request $request)
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|in:admin,anggota',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.users.index')->with('success', 'User baru berhasil ditambahkan');
+    }
+
+    // Hapus user
+    public function destroy($id)
+    {
+        if (Gate::denies('admin')) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus');
     }
 }

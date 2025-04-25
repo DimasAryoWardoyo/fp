@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard & Profil
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [IdentitasController::class, 'index'])->name('identitas.index');
-    Route::get('/edit-profile', [UserController::class, 'editProfile'])->name('user.edit-profile');
+    Route::get('/edit-profile', [UserController::class, 'editProfile'])->name('identitas.user.edit-profile');
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('user.update-profile');
 
     Route::get('/identitas/{identitas}/edit', [IdentitasController::class, 'edit'])->name('identitas.edit');
@@ -87,7 +87,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/notulen/{notulen}/edit', [NotulenController::class, 'edit'])->name('notulen.edit');
     Route::put('/notulen/{notulen}', [NotulenController::class, 'update'])->name('notulen.update');
 
-
+    // Kelola User (Admin)
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
 });
 
 Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.form');

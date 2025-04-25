@@ -14,7 +14,7 @@
                             <div class="card-body">
                                 <div class="dashboard-card-subtitle">
                                     Akun
-                                    <a href="{{ route('user.edit-profile') }}" class="btn btn-warning float-end">
+                                    <a href="{{ route('identitas.user.edit-profile') }}" class="btn btn-warning float-end">
                                         Edit <i class="fa fa-pencil-square" aria-hidden="true"></i>
                                     </a>
                                 </div>

@@ -38,7 +38,7 @@
                         Dashboard
                     </a>
                     <a href="{{ route('identitas.index') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('identitas.index') ? 'active' : '' }}">
+                        class="list-group-item list-group-item-action {{ request()->routeIs('identitas*') ? 'active' : '' }}">
                         Profile
                     </a>
                     <a href="{{ route('agenda.index') }}"
@@ -69,12 +69,14 @@
                             class="list-group-item list-group-item-action {{ request()->is('broadcast') ? 'active' : '' }}">
                             Broadcast WA
                         </a>
+                        <a href="{{ route('admin.users.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('admin/users*') ? 'active' : '' }}">
+                            Kelola Anggota
+                        </a>
+
                         <a href="#"
                             class="list-group-item list-group-item-action {{ request()->is('admin/testimonials') ? 'active' : '' }}">
                             Informasi Keuangan
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
-                            Kelola Anggota
                         </a>
 
                         <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
