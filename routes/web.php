@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AnggotaFinanceController;
 use App\Http\Controllers\BroadcastController;
+use App\Http\Controllers\PerlengkapanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\IdentitasController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Anggota\AnggotaController;
+use App\Http\Controllers\FinanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,13 +64,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/agenda/{id}', [AgendaController::class, 'show'])->name('agenda.show');
 
     // Notulen (semua user bisa lihat detail notulen)
-    Route::resource('notulen', NotulenController::class)->only(['index']);
-    Route::get('/notulen/{notulen}', [NotulenController::class, 'show'])->name('notulen.show');
+    Route::resource('/agenda/notulen', NotulenController::class)->only(['index']);
+    Route::get('/agenda/notulen/{notulen}', [NotulenController::class, 'show'])->name('notulen.show');
+
 });
 
 // ====================
 // Route Khusus Admin
 // ====================
+
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -82,10 +87,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/agenda/{id}/presensi/close', [PresensiController::class, 'close'])->name('presensi.close');
 
     // Notulen (CRUD Admin)
-    Route::get('/notulen/create', [NotulenController::class, 'create'])->name('notulen.create');
-    Route::post('/notulen', [NotulenController::class, 'store'])->name('notulen.store');
-    Route::get('/notulen/{notulen}/edit', [NotulenController::class, 'edit'])->name('notulen.edit');
-    Route::put('/notulen/{notulen}', [NotulenController::class, 'update'])->name('notulen.update');
+    Route::get('/agenda/notulen/create', [NotulenController::class, 'create'])->name('notulen.create');
+    Route::post('/agenda/notulen', [NotulenController::class, 'store'])->name('notulen.store');
+    Route::get('/agenda/notulen/{notulen}/edit', [NotulenController::class, 'edit'])->name('notulen.edit');
+    Route::put('/agenda/notulen/{notulen}', [NotulenController::class, 'update'])->name('notulen.update');
 
     // Kelola User (Admin)
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
@@ -94,7 +99,22 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
+    Route::get('/finance', [FinanceController::class, 'index'])->name('admin.finance.index');
+    Route::get('/finance/kas/create', [FinanceController::class, 'createKas'])->name('admin.finance.kas.create');
+    Route::post('/finance/kas/store', [FinanceController::class, 'storeKas'])->name('admin.finance.kas.store');
+    Route::get('/finance/dana-lain/create', [FinanceController::class, 'createDanaLain'])->name('admin.finance.dana_lain.create');
+    Route::post('/finance/dana-lain/store', [FinanceController::class, 'storeDanaLain'])->name('admin.finance.dana_lain.store');
+    Route::get('/finance/pengeluaran/create', [FinanceController::class, 'createPengeluaran'])->name('admin.finance.pengeluaran.create');
+    Route::post('/finance/pengeluaran/store', [FinanceController::class, 'storePengeluaran'])->name('admin.finance.pengeluaran.store');
+    Route::get('/finance/kas/{user}/select', [FinanceController::class, 'selectKas'])->name('admin.finance.select');
+
+    Route::get('/perlengkapan', [PerlengkapanController::class, 'index'])->name('admin.perlengkapan.index');
+    Route::get('/perlengkapan/create', [PerlengkapanController::class, 'create'])->name('admin.perlengkapan.create');
+    Route::post('/perlengkapan', [PerlengkapanController::class, 'store'])->name('admin.perlengkapan.store');
+    Route::delete('/perlengkapan/{id}', [PerlengkapanController::class, 'destroy'])->name('admin.perlengkapan.destroy');
 });
+
 
 Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.form');
 Route::post('/broadcast/send', [BroadcastController::class, 'send'])->name('broadcast.send');
@@ -107,4 +127,10 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
     // Presensi (Form dan Simpan)
     Route::get('/agenda/{id}/presensi/form', [PresensiController::class, 'form'])->name('presensi.form');
     Route::post('/agenda/{id}/presensi', [PresensiController::class, 'store'])->name('presensi.store');
+
+    // Untuk anggota melihat ringkasan keuangan
+    Route::get('/overview', [AnggotaFinanceController::class, 'index'])->name('overview');
+    Route::get('/overview/pengeluaran/{id}', [App\Http\Controllers\AnggotaFinanceController::class, 'show'])->name('anggota.pengeluaran.show');
+
+    Route::get('/perlengkapan', [PerlengkapanController::class, 'anggotaIndex'])->name('anggota.perlengkapan.index');
 });

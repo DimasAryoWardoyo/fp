@@ -1,52 +1,91 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container">
-        <h2>Buat Agenda Baru</h2>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Oops!</strong> Ada kesalahan dalam input Anda.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    <div class="section-content section-dashboard-home" data-aos="fade-up">
+        <div class="container-fluid">
+            <div class="dashboard-heading">
+                <h2 class="dashboard-title">Buat Agenda Baru</h2>
             </div>
-        @endif
+            <div class="dashboard-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <strong>Oops!</strong> Ada kesalahan dalam input Anda.<br><br>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body">
+                                <form action="{{ route('agenda.store') }}" method="POST">
+                                    @csrf
 
-        <form action="{{ route('agenda.store') }}" method="POST">
-            @csrf
+                                    <div class="mb-3">
+                                        <label for="nama_agenda" class="form-label">Nama Agenda</label>
+                                        <input type="text" id="nama_agenda" name="nama_agenda"
+                                            class="form-control @error('nama_agenda') is-invalid @enderror"
+                                            value="{{ old('nama_agenda') }}" required>
+                                        @error('nama_agenda')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-            <div class="mb-3">
-                <label for="nama_agenda" class="form-label">Nama Agenda</label>
-                <input type="text" name="nama_agenda" class="form-control" value="{{ old('nama_agenda') }}" required>
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                                        <textarea name="deskripsi" id="deskripsi" rows="4"
+                                            class="form-control @error('deskripsi') is-invalid @enderror"
+                                            required>{{ old('deskripsi') }}</textarea>
+                                        @error('deskripsi')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="waktu_mulai" class="form-label">Waktu Mulai</label>
+                                            <input type="datetime-local" id="waktu_mulai" name="waktu_mulai"
+                                                class="form-control @error('waktu_mulai') is-invalid @enderror"
+                                                value="{{ old('waktu_mulai') }}" required>
+                                            @error('waktu_mulai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="waktu_selesai" class="form-label">Waktu Selesai</label>
+                                            <input type="datetime-local" id="waktu_selesai" name="waktu_selesai"
+                                                class="form-control @error('waktu_selesai') is-invalid @enderror"
+                                                value="{{ old('waktu_selesai') }}" required>
+                                            @error('waktu_selesai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="lokasi" class="form-label">Lokasi</label>
+                                        <input type="text" id="lokasi" name="lokasi"
+                                            class="form-control @error('lokasi') is-invalid @enderror"
+                                            value="{{ old('lokasi') }}" required>
+                                        @error('lokasi')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('agenda.index') }}" class="btn btn-danger">Kembali</a>
+                                        <button type="submit" class="btn btn-success">Simpan Agenda</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="deskripsi" class="form-label">Deskripsi</label>
-                <textarea name="deskripsi" class="form-control" rows="4" required>{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="waktu_mulai" class="form-label">Waktu Mulai</label>
-                <input type="datetime-local" name="waktu_mulai" class="form-control" value="{{ old('waktu_mulai') }}"
-                    required>
-            </div>
-
-            <div class="mb-3">
-                <label for="waktu_selesai" class="form-label">Waktu Selesai</label>
-                <input type="datetime-local" name="waktu_selesai" class="form-control" value="{{ old('waktu_selesai') }}"
-                    required>
-            </div>
-
-            <div class="mb-3">
-                <label for="lokasi" class="form-label">Lokasi</label>
-                <input type="text" name="lokasi" class="form-control" value="{{ old('lokasi') }}" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Simpan Agenda</button>
-            <a href="{{ route('agenda.index') }}" class="btn btn-secondary">Kembali</a>
-        </form>
+        </div>
     </div>
 @endsection

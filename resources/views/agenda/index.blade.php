@@ -15,9 +15,6 @@
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5>Agenda</h5>
                                     <div>
-                                        <a href="#" class="btn btn-warning me-2">
-                                            Kehadiran <i class="fa fa-address-card" aria-hidden="true"></i>
-                                        </a>
                                         @can('admin')
                                             <a href="{{ route('agenda.create') }}" class="btn btn-warning">
                                                 Tambah Agenda <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -33,7 +30,7 @@
                                                 <th scope="col" style="width: 20%;">Tanggal</th>
                                                 <th scope="col" style="width: 40%;">Agenda</th>
                                                 <th scope="col" style="width: 30%;">Lokasi</th>
-                                                <th scope="col" style="width: 10%;">Status</th>
+                                                <th scope="col" style="width: 10%;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>

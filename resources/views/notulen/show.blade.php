@@ -1,36 +1,44 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container">
-        <h2>Detail Notulen</h2>
+    <div class="section-content section-dashboard-home">
+        <div class="container-fluid">
+            <div class="dashboard-heading">
+                <h2>Detail Notulen</h2>
+            </div>
 
-        <div class="card mb-4">
-            <div class="card-body">
-                {{-- Pembicara --}}
-                <p><strong>Pembicara:</strong> {{ $notulen->pembicara }}</p>
+            <div class="dashboard-content">
+                <div class="card mt-4 mb-2">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                {{-- Pembicara --}}
+                                <tr>
+                                    <th style="width: 20%">Pembicara</th>
+                                    <td>{{ $notulen->pembicara }}</td>
+                                </tr>
 
-                {{-- Notulen --}}
-                <p><strong>Notulen:</strong></p>
-                <div class="border p-3 bg-light mb-3">
-                    {!! nl2br(e($notulen->notulen)) !!}
-                </div>
+                                {{-- Isi Notulen --}}
+                                <tr>
+                                    <th>Notulen</th>
+                                    <td>{!! nl2br(e($notulen->notulen)) !!}</td>
+                                </tr>
 
-                {{-- Poin Pembahasan --}}
-                @if(!empty($notulen->poin_pembahasan))
-                    <p><strong>Poin Pembahasan:</strong></p>
-                    <div class="border p-3 bg-light mb-3">
-                        {!! nl2br(e($notulen->poin_pembahasan)) !!}
+                                {{-- Poin Pembahasan --}}
+                                @if(!empty($notulen->poin_pembahasan))
+                                    <tr>
+                                        <th>Poin Pembahasan</th>
+                                        <td>{!! nl2br(e($notulen->poin_pembahasan)) !!}</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+
+                        {{-- Tombol Kembali --}}
+                        <a href="{{ route('agenda.show', $notulen->agenda_id) }}" class="btn btn-danger mt-3">Kembali</a>
                     </div>
-                @endif
-
-                {{-- Kesimpulan --}}
-                <p><strong>Kesimpulan:</strong></p>
-                <div class="border p-3 bg-light">
-                    {!! nl2br(e($notulen->kesimpulan)) !!}
                 </div>
             </div>
         </div>
-
-        <a href="{{ route('agenda.show', $notulen->agenda_id) }}" class="btn btn-secondary">Kembali ke Detail Agenda</a>
     </div>
 @endsection

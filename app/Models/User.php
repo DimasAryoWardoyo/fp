@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Identitas::class, 'user_id');
     }
+
+    public function kas()
+    {
+        return $this->hasMany(Kas::class);
+    }
 }

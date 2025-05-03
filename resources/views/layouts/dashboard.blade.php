@@ -52,15 +52,19 @@
                             class="list-group-item list-group-item-action {{ request()->is('struktur') ? 'active' : '' }}">
                             Struktur Karang Taruna
                         </a>
-
-                        <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
-                            Pemberitahuan
+                        <a href="{{ route('overview') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('overview*') ? 'active' : '' }}">
+                            Keuangan
                         </a>
 
-                        {{-- <a href="#"
-                            class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
-                            Informassi Keuangan
-                        </a> --}}
+                        <a href="{{ route('anggota.perlengkapan.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('perlengkapan*') ? 'active' : '' }}">
+                            Perlengkapan & Peralatan
+                        </a>
+                        <a href="{{ route('home') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('home*') ? 'active' : '' }}">
+                            Home
+                        </a>
                     @endcan
 
                     {{-- Admin Layouts --}}
@@ -74,10 +78,16 @@
                             Kelola Anggota
                         </a>
 
-                        <a href="#"
-                            class="list-group-item list-group-item-action {{ request()->is('admin/testimonials') ? 'active' : '' }}">
-                            Informasi Keuangan
+                        <a href="{{ route('admin.finance.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('admin/finance*') ? 'active' : '' }}">
+                            Kelola Keuangan
                         </a>
+
+                        <a href="{{ route('admin.perlengkapan.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
+                            Perlengkapan & Peralatan
+                        </a>
+
 
                         <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
                             Edit Konten

@@ -7,20 +7,34 @@
                 <h2>Detail Agenda</h2>
             </div>
             <div class="dashboard-content">
-                <div class="card mb-4 mt-4">
+                <div class="card mb-2 mt-4">
                     <div class="card-body">
-                        <h4 class="card-title">{{ $agenda->nama_agenda }}</h4>
-                        <p><strong>Deskripsi:</strong> {{ $agenda->deskripsi }}</p>
-                        <p><strong>Lokasi:</strong> {{ $agenda->lokasi }}</p>
-                        <p>
-                            <strong>Waktu Mulai:</strong>
-                            {{ \Carbon\Carbon::parse($agenda->waktu_mulai)->format('d-m-Y H:i') }}
-                        </p>
-                        <p>
-                            <strong>Waktu Selesai:</strong>
-                            {{ \Carbon\Carbon::parse($agenda->waktu_selesai)->format('d-m-Y H:i') }}
-                        </p>
-
+                        <table class="table table-bordered table-striped mb-4">
+                            <tr>
+                                <td style="width: 150px;"><strong>Nama Agenda</strong></td>
+                                <td style="width: 10px;">:</td>
+                                <td>{{ $agenda->nama_agenda }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lokasi</strong></td>
+                                <td>:</td>
+                                <td>{{ $agenda->lokasi }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Waktu Mulai</strong></td>
+                                <td>:</td>
+                                <td>{{ \Carbon\Carbon::parse($agenda->waktu_mulai)->format('d-m-Y H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Waktu Selesai</strong></td>
+                                <td>:</td>
+                                <td>{{ \Carbon\Carbon::parse($agenda->waktu_selesai)->format('d-m-Y H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deskripsi</strong></td>
+                                <td>:</td>
+                                <td>{{ $agenda->deskripsi }}</td>
+                        </table>
                         @php
                             $user = Auth::user(); // pastikan user login
                             $now = now();
@@ -120,7 +134,7 @@
                                         Edit Notulen
                                     </a>
                                 @else
-                                    <a href="{{ route('notulen.create', ['agenda_id' => $agenda->id]) }}" class="btn btn-success">
+                                    <a href="{{ route('notulen.create', ['agenda_id' => $agenda->id]) }}" class="btn btn-warning">
                                         Tambah Notulen
                                     </a>
                                 @endif
@@ -135,7 +149,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('agenda.index') }}" class="btn btn-danger">Kembali</a>
+                <a href="{{ route('agenda.index') }}" class="btn btn-danger mb-4">Kembali</a>
             </div>
         </div>
     </div>
