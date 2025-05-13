@@ -2,63 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
+use App\Models\Konten;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('page.home');
+        // Ambil semua konten terbaru dan semua kategori
+        $kontens = Konten::latest()->get();
+        $kategoris = Kategori::all();
+
+        return view('page.home', compact('kontens', 'kategoris'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan konten berdasarkan kategori.
+     *
+     * @param int $id
      */
-    public function create()
+    public function kategori($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+        $kontens = Konten::where('kategori_id', $id)->latest()->get();
+        $categories = Kategori::all(); // TAMBAHKAN INI
+
+        return view('page.kategori', compact('kategori', 'kontens', 'categories'));
+    }
+    
+    public function show($id)
+    {
+        $konten = Konten::with('kategori')->findOrFail($id);
+        return view('page.detail', compact('konten'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

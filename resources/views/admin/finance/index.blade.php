@@ -5,6 +5,7 @@
         <div class="container-fluid">
             <div class="dashboard-heading mb-4">
                 <h2 class="dashboard-title">Daftar Keuangan</h2>
+                <p class="dashboard-subtitle">Kelola keuangan Karang Taruna</p>
             </div>
 
             <div class="dashboard-content">

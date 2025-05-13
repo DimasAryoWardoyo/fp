@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnggotaFinanceController;
 use App\Http\Controllers\BroadcastController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\PerlengkapanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -27,6 +28,10 @@ use App\Http\Controllers\FinanceController;
 // Halaman Utama (Public)
 // ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/kategori/{id}', [HomeController::class, 'kategori'])->name('kategori.show');
+Route::get('/konten/{id}', [HomeController::class, 'show'])->name('konten.show');
+
+
 
 // ====================
 // Autentikasi
@@ -113,6 +118,18 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/perlengkapan/create', [PerlengkapanController::class, 'create'])->name('admin.perlengkapan.create');
     Route::post('/perlengkapan', [PerlengkapanController::class, 'store'])->name('admin.perlengkapan.store');
     Route::delete('/perlengkapan/{id}', [PerlengkapanController::class, 'destroy'])->name('admin.perlengkapan.destroy');
+
+    // ===== KONTEN =====
+    Route::get('/content', [ContentController::class, 'index'])->name('admin.content.index');
+    Route::get('/content/create', [ContentController::class, 'create'])->name('admin.content.create');
+    Route::post('/content/store', [ContentController::class, 'store'])->name('admin.content.store');
+    Route::get('/content/{id}/edit', [ContentController::class, 'edit'])->name('admin.content.edit');
+    Route::put('/content/{id}/update', [ContentController::class, 'update'])->name('admin.content.update');
+    Route::delete('/content/{id}', [ContentController::class, 'destroy'])->name('admin.content.destroy');
+
+    // ===== KATEGORI =====
+    Route::get('/content/category', [ContentController::class, 'createCategory'])->name('admin.content.kategori');
+    Route::post('/content/kategori', [ContentController::class, 'storeCategory'])->name('admin.content.kategori.store');
 });
 
 

@@ -89,7 +89,8 @@
                         </a>
 
 
-                        <a href="#" class="list-group-item list-group-item-action {{ request()->is('/') ? 'active' : '' }}">
+                        <a href="{{ route('admin.content.index') }}"
+                            class="list-group-item list-group-item-action {{ request()->is('admin/content*') ? 'active' : '' }}">
                             Edit Konten
                         </a>
                     @endcan
