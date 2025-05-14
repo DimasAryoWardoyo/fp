@@ -2,51 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peminjaman;
 use App\Models\Perlengkapan;
+use Auth;
 use Illuminate\Http\Request;
 
 class PerlengkapanController extends Controller
 {
-    public function index() {
-        $perlengkapan = Perlengkapan::all();
-        return view('admin.perlengkapan.index', compact('perlengkapan'));
+    // Tampilkan semua barang
+    public function index()
+    {
+        $perlengkapans = Perlengkapan::all();
+        return view('perlengkapan.index', compact('perlengkapans'));
     }
 
-    public function create() {
-        return view('admin.perlengkapan.create');
+    // Detail barang
+    public function show(Perlengkapan $perlengkapan)
+    {
+        return view('perlengkapan.show', compact('perlengkapan'));
     }
 
-    public function store(Request $request) {
+    // Admin - form tambah barang
+    public function create()
+    {
+        return view('perlengkapan.create');
+    }
+
+    public function store(Request $request)
+    {
         $request->validate([
-            'nama_barang' => 'required|string',
-            'jumlah_barang' => 'required|integer',
-            'keterangan' => 'nullable|string',
-            'foto_barang' => 'nullable|image|mimes:jpg,jpeg,png'
+            'nama' => 'required|string',
+            'deskripsi' => 'nullable|string',
+            'stok' => 'required|integer|min:1',
         ]);
-
-        $fotoPath = $request->file('foto_barang') ? $request->file('foto_barang')->store('perlengkapan', 'public') : null;
 
         Perlengkapan::create([
-            'nama_barang' => $request->nama_barang,
-            'jumlah_barang' => $request->jumlah_barang,
-            'keterangan' => $request->keterangan,
-            'foto_barang' => $fotoPath,
+            'nama' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'stok' => $request->stok,
+            'stok_awal' => $request->stok, // otomatis isi stok_awal
         ]);
 
-        return redirect()->route('admin.perlengkapan.index')->with('success', 'Barang berhasil ditambahkan.');
+        return redirect()->route('perlengkapan.index')->with('success', 'Perlengkapan berhasil ditambahkan.');
     }
 
-    public function destroy($id) {
-        $barang = Perlengkapan::findOrFail($id);
-        if ($barang->foto_barang) {
-            \Storage::disk('public')->delete($barang->foto_barang);
-        }
-        $barang->delete();
-        return redirect()->back()->with('success', 'Barang berhasil dihapus.');
+
+    // Admin - edit barang
+    public function edit(Perlengkapan $perlengkapan)
+    {
+        return view('perlengkapan.edit', compact('perlengkapan'));
     }
 
-    public function anggotaIndex() {
-        $perlengkapan = Perlengkapan::all();
-        return view('anggota.perlengkapan.index', compact('perlengkapan'));
+    public function update(Request $request, Perlengkapan $perlengkapan)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'stok' => 'required|integer|min:0',
+        ]);
+
+        $perlengkapan->update($request->all());
+
+        return redirect()->route('perlengkapan.index')->with('success', 'Barang diperbarui');
+    }
+
+    public function destroy(Perlengkapan $perlengkapan)
+    {
+        $perlengkapan->delete();
+        return redirect()->route('perlengkapan.index')->with('success', 'Barang dihapus');
     }
 }

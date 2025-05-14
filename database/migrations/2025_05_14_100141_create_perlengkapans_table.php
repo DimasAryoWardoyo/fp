@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('perlengkapans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_barang');
-            $table->integer('jumlah_barang');
-            $table->text('keterangan')->nullable();
-            $table->string('foto_barang')->nullable();
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+            $table->integer('stok');
+            $table->integer('stok_awal');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnggotaFinanceController;
 use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PerlengkapanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -72,6 +73,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/agenda/notulen', NotulenController::class)->only(['index']);
     Route::get('/agenda/notulen/{notulen}', [NotulenController::class, 'show'])->name('notulen.show');
 
+    Route::get('/perlengkapan', [PerlengkapanController::class, 'index'])->name('perlengkapan.index');
+    Route::get('/perlengkapan/{perlengkapan}', [PerlengkapanController::class, 'show'])->name('perlengkapan.show');
+    Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
+    Route::get('/perlengkapan/peminjaman/create/{id}', [PeminjamanController::class, 'create'])->name('peminjaman.create');
+    Route::post('/perlengkapan/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
 });
 
 // ====================
@@ -114,10 +120,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/finance/pengeluaran/store', [FinanceController::class, 'storePengeluaran'])->name('admin.finance.pengeluaran.store');
     Route::get('/finance/kas/{user}/select', [FinanceController::class, 'selectKas'])->name('admin.finance.select');
 
-    Route::get('/perlengkapan', [PerlengkapanController::class, 'index'])->name('admin.perlengkapan.index');
-    Route::get('/perlengkapan/create', [PerlengkapanController::class, 'create'])->name('admin.perlengkapan.create');
-    Route::post('/perlengkapan', [PerlengkapanController::class, 'store'])->name('admin.perlengkapan.store');
-    Route::delete('/perlengkapan/{id}', [PerlengkapanController::class, 'destroy'])->name('admin.perlengkapan.destroy');
+    Route::get('/perlengkapan/create', [PerlengkapanController::class, 'create'])->name('perlengkapan.create');
+    Route::post('/perlengkapan', [PerlengkapanController::class, 'store'])->name('perlengkapan.store');
+    Route::get('/perlengkapan/{perlengkapan}/edit', [PerlengkapanController::class, 'edit'])->name('perlengkapan.edit');
+    Route::put('/perlengkapan/{perlengkapan}', [PerlengkapanController::class, 'update'])->name('perlengkapan.update');
+    Route::delete('/perlengkapan/{perlengkapan}', [PerlengkapanController::class, 'destroy'])->name('perlengkapan.destroy');
+
+    Route::get('/perlengkapan/peminjaman/tanggapan', [PeminjamanController::class, 'daftarPengajuan'])->name('peminjaman.tanggapan');
+    Route::post('/perlengkapan/peminjaman/{peminjaman}/tanggapi', [PeminjamanController::class, 'tanggapi'])->name('peminjaman.tanggapi');
+    Route::get('/perlengkapan/peminjaman/cek-selesai', [PeminjamanController::class, 'cekDanKembalikan'])->name('peminjaman.cekSelesai');
 
     // ===== KONTEN =====
     Route::get('/content', [ContentController::class, 'index'])->name('admin.content.index');
@@ -148,6 +159,4 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
     // Untuk anggota melihat ringkasan keuangan
     Route::get('/overview', [AnggotaFinanceController::class, 'index'])->name('overview');
     Route::get('/overview/pengeluaran/{id}', [App\Http\Controllers\AnggotaFinanceController::class, 'show'])->name('anggota.pengeluaran.show');
-
-    Route::get('/perlengkapan', [PerlengkapanController::class, 'anggotaIndex'])->name('anggota.perlengkapan.index');
 });

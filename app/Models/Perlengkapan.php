@@ -9,9 +9,18 @@ class Perlengkapan extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nama_barang',
-        'jumlah_barang',
-        'keterangan',
-        'foto_barang',
+        'nama',
+        'deskripsi',
+        'stok',
+        'stok_awal',
     ];
+    public function peminjamans()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
+    public function getSedangDipinjamAttribute()
+    {
+        return $this->stok_awal - $this->stok;
+    }
+
 }

@@ -42,8 +42,12 @@
                         Profile
                     </a>
                     <a href="{{ route('agenda.index') }}"
-                        class="list-group-item list-group-item-action {{ request()->is('agenda*') ? 'active' : '' }}">
+                        class="list-group-item list-group-item-action {{ request()->is('agenda*') || request()->is('admin/agenda*') ? 'active' : '' }}">
                         Agenda Rapat
+                    </a>
+                    <a href="{{ route('perlengkapan.index') }}"
+                        class="list-group-item list-group-item-action  {{ request()->is('perlengkapan*') || request()->is('peminjaman*') ? 'active' : '' }}">
+                        Perlengkapan & Peralatan
                     </a>
 
                     {{-- Anggota Layouts --}}
@@ -57,10 +61,6 @@
                             Keuangan
                         </a>
 
-                        <a href="{{ route('anggota.perlengkapan.index') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('perlengkapan*') ? 'active' : '' }}">
-                            Perlengkapan & Peralatan
-                        </a>
                         <a href="{{ route('home') }}"
                             class="list-group-item list-group-item-action {{ request()->is('home*') ? 'active' : '' }}">
                             Home
@@ -82,12 +82,6 @@
                             class="list-group-item list-group-item-action {{ request()->is('admin/finance*') ? 'active' : '' }}">
                             Kelola Keuangan
                         </a>
-
-                        <a href="{{ route('admin.perlengkapan.index') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
-                            Perlengkapan & Peralatan
-                        </a>
-
 
                         <a href="{{ route('admin.content.index') }}"
                             class="list-group-item list-group-item-action {{ request()->is('admin/content*') ? 'active' : '' }}">
