@@ -15,10 +15,10 @@
                                 <a href="{{ route('users.create') }}" class="btn mb-3 btn-warning">
                                     Tambah User <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 </a>
+                                @if(session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    @if(session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @endif
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover">
                                             <thead class="table-secondary">
