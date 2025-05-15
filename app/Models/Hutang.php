@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pengeluaran extends Model
+class Hutang extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'kegiatan',
-        'sumber_dana',
+        'user_id',
         'tanggal',
-        'deskripsi',
         'jumlah',
-        'bukti',
+        'keterangan',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

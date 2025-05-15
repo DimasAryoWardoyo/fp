@@ -30,7 +30,7 @@
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover align-middle">
                                 <thead class="table-light text-center">
-                                    <tr>
+                                    <tr class="bg-light">
                                         <th>Nama</th>
                                         <th>Stok</th>
                                         <th>Aksi</th>
@@ -41,7 +41,7 @@
                                         <tr>
                                             <td>{{ $item->nama }}</td>
                                             <td class="text-center">{{ $item->stok }}</td>
-                                            <td class="text-nowrap">
+                                            <td class="text-center">
                                                 <a href="{{ route('perlengkapan.show', $item->id) }}"
                                                     class="btn btn-sm btn-info me-1">
                                                     <i class="bi bi-eye"></i> Detail

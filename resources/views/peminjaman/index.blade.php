@@ -16,6 +16,7 @@
                                     <th>Nama</th>
                                     <th>Stok</th>
                                     <th>Deskripsi</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -25,6 +26,7 @@
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->stok }}</td>
                                         <td>{{ $item->deskripsi }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>
                                             <a href="{{ route('peminjaman.create', $item->id) }}" class="btn btn-info">pilih</a>
                                         </td>

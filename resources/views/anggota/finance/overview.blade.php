@@ -13,16 +13,16 @@
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
-                                <h6 class="text-muted">Total Pemasukan</h6>
-                                <h5 class="text-success">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h5>
+                                <h6 class="text-muted">Total Kas</h6>
+                                <h5 class="text-info">Rp {{ number_format($totalKas, 0, ',', '.') }}</h5>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
-                                <h6 class="text-muted">Kas Saya</h6>
-                                <h5 class="text-info">Rp {{ number_format($kasSaya, 0, ',', '.') }}</h5>
+                                <h6 class="text-muted">Total Dana Lain</h6>
+                                <h5 class="text-success">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h5>
                             </div>
                         </div>
                     </div>
@@ -43,60 +43,87 @@
                         </div>
                     </div>
 
+                    {{-- Tabel Kas Saya --}}
+                    <h5 class="mt-3">Kas Saya</h5>
+                    <div class="table-responsive">
+                        <table class="table  text-center align-middle table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Jumlah</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($kasSaya as $kas)
+                                    <tr>
+                                        <td>{{ $kas->tanggal }}</td>
+                                        <td>Rp {{ number_format($kas->jumlah, 0, ',', '.') }}</td>
+                                        <td>{{ $kas->deskripsi }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">Belum ada data kas.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
                     {{-- Tabel Pengeluaran --}}
-                        <div class="card-body">
-                            <h5 class="mb-3">Detail Pengeluaran</h5>
-                            <div class="table-responsive">
-                                <table class="table table-bordered rounded text-center align-middle">
-                                    <thead class="thead-light">
+                    <div class="card-body">
+                        <h5 class="mb-3">Detail Pengeluaran</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered rounded text-center align-middle">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Kegiatan</th>
+                                        <th>Jumlah</th>
+                                        <th>Bukti</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($pengeluaran as $item)
                                         <tr>
-                                            <th>Tanggal</th>
-                                            <th>Kegiatan</th>
-                                            <th>Jumlah</th>
-                                            <th>Bukti</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($pengeluaran as $item)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                                                <td>{{ $item->kegiatan }}</td>
-                                                <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                                                <td>
-                                                    @if ($item->bukti)
-                                                        @php $ext = pathinfo($item->bukti, PATHINFO_EXTENSION); @endphp
-                                                        @if (in_array($ext, ['jpg', 'jpeg', 'png']))
-                                                            <img src="{{ asset('storage/' . $item->bukti) }}" alt="Bukti" width="100"
-                                                                class="img-thumbnail">
-                                                        @else
-                                                            <a href="{{ asset('storage/' . $item->bukti) }}" target="_blank"
-                                                                class="btn btn-sm btn-outline-primary">
-                                                                Lihat Bukti
-                                                            </a>
-                                                        @endif
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                                            <td>{{ $item->kegiatan }}</td>
+                                            <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                            <td>
+                                                @if ($item->bukti)
+                                                    @php $ext = pathinfo($item->bukti, PATHINFO_EXTENSION); @endphp
+                                                    @if (in_array($ext, ['jpg', 'jpeg', 'png']))
+                                                        <img src="{{ asset('storage/' . $item->bukti) }}" alt="Bukti" width="100"
+                                                            class="img-thumbnail">
                                                     @else
-                                                        <span class="text-muted">-</span>
+                                                        <a href="{{ asset('storage/' . $item->bukti) }}" target="_blank"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            Lihat Bukti
+                                                        </a>
                                                     @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('anggota.pengeluaran.show', $item->id) }}"
-                                                        class="btn btn-sm btn-primary">
-                                                        Detail
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="text-muted">Belum ada pengeluaran</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('anggota.pengeluaran.show', $item->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Detail
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-muted">Belum ada pengeluaran</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 @endsection

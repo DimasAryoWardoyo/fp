@@ -1,71 +1,117 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="section-content section-dashboard-home">
+    <div class="section-content section-dashboard-home" data-aos="fade-up">
         <div class="container-fluid">
-            <div class="dashboard-heading">
+            <div class="dashboard-heading mb-4">
                 <h2 class="dashboard-title">Struktur Organisasi Karang Taruna</h2>
-                <p class="dashboard-subtitle">Kelola Identitas Anda Dengan Benar!</p>
+                <p class="dashboard-subtitle">
+                    Berikut adalah struktur organisasi Karang Taruna yang ada di desa kami.
+                </p>
             </div>
 
             <div class="dashboard-content">
+                @can('admin')
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5>Struktur Organisasi</h5>
+                        <a href="{{ route('struktur.create') }}" class="btn btn-warning">Konfigurasi Struktur</a>
+                    </div>
+                @endcan
+
+                @php
+                    $struktur = $strukturs ?? collect();
+                    $get = fn($jabatan) => $struktur->where('jabatan', $jabatan)->first();
+                    $getAll = fn($jabatan) => $struktur->where('jabatan', $jabatan);
+                @endphp
+
 
                 <!-- Ketua -->
-                <div class="text-center">
-                    <div class="card border mx-auto" style="width: 250px;">
-                        <div class="card-body bg-warning  rounded">
-                            <h5 class="card-title fw-bold">Ketua</h5>
-                            <p class="card-text">Dimas Aryo Wardoyo</p>
+                @if ($ketua = $get('Ketua'))
+                    <div class="text-center">
+                        <div class="card border mx-auto" style="width: 250px;">
+                            <div class="card-body bg-warning rounded">
+                                <h5 class="card-title fw-bold">Ketua</h5>
+                                <p class="card-text">{{ $ketua->user->name ?? '-' }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <!-- Garis ke Wakil Ketua -->
                 <div class="d-flex justify-content-center">
                     <div class="border-start bg-dark" style="height: 40px; width: 3px;"></div>
                 </div>
 
                 <!-- Wakil Ketua -->
-                <div class="text-center">
-                    <div class="card border mx-auto" style="width: 250px;">
-                        <div class="card-body bg-info  rounded">
-                            <h5 class="card-title fw-bold">Wakil Ketua</h5>
-                            <p class="card-text">Dimas Aryo Wardoyo</p>
+                @if ($wakil = $get('Wakil Ketua'))
+                    <div class="text-center">
+                        <div class="card border mx-auto" style="width: 250px;">
+                            <div class="card-body bg-info rounded">
+                                <h5 class="card-title fw-bold">Wakil Ketua</h5>
+                                <p class="card-text">{{ $wakil->user->name ?? '-' }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <!-- Garis penghubung ke Sekretaris & Bendahara -->
+                <!-- Sekretaris -->
                 <div class="d-flex justify-content-center">
                     <div class="border-start bg-dark" style="height: 40px; width: 3px;"></div>
                 </div>
-
-                <!-- Garis horizontal sebelum Sekretaris & Bendahara -->
                 <div class="d-flex justify-content-center">
-                    <div class="border border-dark bg-dark" style="width: 40%; height: 2px;"></div>
+                    <div class="border border-dark bg-dark" style="width: 30%; height: 2px;"></div>
                 </div>
-
-                <!-- Sekretaris dan Bendahara -->
                 <div class="row justify-content-center mt-2">
-                    <div class="col-md-4 col-12 d-flex justify-content-center">
-                        <div class="card border" style="width: 250px;">
-                            <div class="card-body bg-success  rounded text-center">
-                                <h5 class="card-title fw-bold">Sekretaris</h5>
-                                <p class="card-text">Dimas Aryo Wardoyo</p>
+                    @foreach ($struktur->filter(fn($item) => str_starts_with($item->jabatan, 'Sekretaris')) as $sekretaris)
+                        <div class="col-md-4 col-12 d-flex justify-content-center">
+                            <div class="card border" style="width: 250px;">
+                                <div class="card-body bg-success rounded text-center">
+                                    <h5 class="card-title fw-bold">{{ $sekretaris->jabatan }}</h5>
+                                    <p class="card-text">{{ $sekretaris->user->name ?? '-' }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-4 col-12 d-flex justify-content-center">
-                        <div class="card border" style="width: 250px;">
-                            <div class="card-body bg-success rounded text-center">
-                                <h5 class="card-title fw-bold">Bendahara</h5>
-                                <p class="card-text">Dimas Aryo Wardoyo</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
+                <!-- Bendahara -->
+                <div class="d-flex justify-content-center">
+                    <div class="border-start bg-dark" style="height: 40px; width: 3px;"></div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="border border-dark bg-dark" style="width: 30%; height: 2px;"></div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    @foreach ($struktur->filter(fn($item) => str_starts_with($item->jabatan, 'Bendahara')) as $bendahara)
+                        <div class="col-md-4 col-12 d-flex justify-content-center">
+                            <div class="card border" style="width: 250px;">
+                                <div class="card-body bg-primary rounded text-center">
+                                    <h5 class="card-title fw-bold">{{ $bendahara->jabatan }}</h5>
+                                    <p class="card-text">{{ $bendahara->user->name ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Pengurus -->
+                <div class="d-flex justify-content-center">
+                    <div class="border-start bg-dark" style="height: 40px; width: 3px;"></div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="border border-dark bg-dark" style="width: 80%; height: 2px;"></div>
+                </div>
+                <div class="row justify-content-center mt-2 mb-4">
+                    @foreach ($struktur->filter(fn($item) => str_starts_with($item->jabatan, 'Pengurus')) as $pengurus)
+                        <div class="col-md-3 col-12 d-flex justify-content-center">
+                            <div class="card border" style="width: 250px;">
+                                <div class="card-body bg-danger rounded text-center">
+                                    <h5 class="card-title fw-bold">{{ $pengurus->jabatan }}</h5>
+                                    <p class="card-text">{{ $pengurus->user->name ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

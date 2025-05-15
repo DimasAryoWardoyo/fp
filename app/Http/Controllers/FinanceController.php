@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hutang;
 use App\Models\DanaLain;
 use App\Models\Kas;
 use App\Models\Pengeluaran;
@@ -9,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class FinanceController extends Controller
 {
@@ -17,7 +19,9 @@ class FinanceController extends Controller
         $kasSaya = Kas::where('user_id', auth()->id())->get();
 
         // Total pemasukan = kas + dana lain
-        $totalKas = Kas::sum('jumlah') + DanaLain::sum('jumlah');
+        $totalKas = Kas::sum('jumlah');
+
+        $saldoDanaLain = DanaLain::sum('jumlah');
 
         // Ambil semua pengeluaran
         $pengeluaran = Pengeluaran::all();
@@ -26,11 +30,12 @@ class FinanceController extends Controller
         $totalPengeluaran = Pengeluaran::sum('jumlah');
 
         // Hitung saldo akhir
-        $saldo = $totalKas - $totalPengeluaran;
+        $saldoAkhir = $totalKas + $saldoDanaLain;
 
-        return view('admin.finance.index', compact('kasSaya', 'totalKas', 'pengeluaran', 'totalPengeluaran', 'saldo'));
+        return view('admin.finance.index', compact('kasSaya', 'totalKas', 'saldoDanaLain', 'pengeluaran', 'totalPengeluaran', 'saldoAkhir'));
     }
 
+    // ============================== Kas Method ==============================
 
     public function createKas()
     {
@@ -46,22 +51,69 @@ class FinanceController extends Controller
     public function storeKas(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric',
-            'deskripsi' => 'required|string',
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
         ]);
 
-        Kas::create([
-            'user_id' => $request->user_id,
-            'tanggal' => $request->tanggal,
-            'jumlah' => $request->jumlah,
-            'deskripsi' => $request->deskripsi,
-        ]);
+        $semuaUser = User::all();
+        $userYangBayar = collect($request->users)->map(fn($id) => (int) $id);
+        $tanggal = $request->tanggal;
+        $jumlah = $request->jumlah;
 
-        return redirect()->route('admin.finance.index')->with('success', 'Kas berhasil ditambahkan.');
+        foreach ($semuaUser as $user) {
+            if ($userYangBayar->contains($user->id)) {
+                // Simpan kas
+                Kas::create([
+                    'user_id' => $user->id,
+                    'tanggal' => $tanggal,
+                    'jumlah' => $jumlah,
+                    'deskripsi' => 'Pembayaran kas pada ' . $tanggal,
+                ]);
+            } else {
+                // Simpan hutang
+                Hutang::create([
+                    'user_id' => $user->id,
+                    'tanggal' => $tanggal,
+                    'jumlah' => $jumlah,
+                    'keterangan' => 'Belum membayar kas tanggal ' . $tanggal,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.finance.index')
+            ->with('success', 'Kas dan hutang berhasil dicatat.');
     }
 
+    // ============================== Hutang Method ==============================
+
+    public function daftarHutang()
+    {
+        $hutangs = Hutang::with('user')->orderBy('tanggal', 'desc')->get();
+        return view('admin.finance.hutang', compact('hutangs'));
+    }
+
+    public function selesaikanHutang($id)
+    {
+        $hutang = Hutang::findOrFail($id);
+
+        DB::transaction(function () use ($hutang) {
+            Kas::create([
+                'user_id' => $hutang->user_id,
+                'tanggal' => $hutang->tanggal,
+                'jumlah' => $hutang->jumlah,
+                'deskripsi' => 'Pembayaran hutang: ' . ($hutang->keterangan ?? '-'),
+            ]);
+
+            // Hapus hutang
+            $hutang->delete();
+        });
+
+        return redirect()->route('admin.finance.hutang')->with('success', 'Hutang berhasil dibayarkan.');
+    }
+
+    // ============================== Dana Lain Method ==============================
 
     public function createDanaLain()
     {
@@ -81,6 +133,8 @@ class FinanceController extends Controller
         return redirect()->route('admin.finance.index')->with('success', 'Dana lain berhasil ditambahkan.');
     }
 
+    // ============================== Pengeluaran Methods ==============================
+
     public function createPengeluaran()
     {
         return view('admin.finance.create_pengeluaran');
@@ -90,9 +144,10 @@ class FinanceController extends Controller
     {
         $request->validate([
             'kegiatan' => 'required|string',
+            'sumber_dana' => 'required|in:Kas,DanaLain',
             'tanggal' => 'required|date',
             'deskripsi' => 'required|string',
-            'jumlah' => 'required|numeric',
+            'jumlah' => 'required|numeric|min:1',
             'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
         ]);
 
@@ -100,11 +155,28 @@ class FinanceController extends Controller
 
         Pengeluaran::create([
             'kegiatan' => $request->kegiatan,
+            'sumber_dana' => $request->sumber_dana,
             'tanggal' => $request->tanggal,
             'deskripsi' => $request->deskripsi,
             'jumlah' => $request->jumlah,
             'bukti' => $buktiPath,
         ]);
+
+        // Kurangi saldo dari sumber dana yang dipilih
+        if ($request->sumber_dana === 'Kas') {
+            Kas::create([
+                'user_id' => auth()->id(), // atau null jika tidak perlu
+                'tanggal' => $request->tanggal,
+                'jumlah' => -abs($request->jumlah), // dikurangi
+                'deskripsi' => 'Pengeluaran: ' . $request->kegiatan,
+            ]);
+        } else {
+            DanaLain::create([
+                'tanggal' => $request->tanggal,
+                'jumlah' => -abs($request->jumlah),
+                'deskripsi' => 'Pengeluaran: ' . $request->kegiatan,
+            ]);
+        }
 
         return redirect()->route('admin.finance.index')->with('success', 'Pengeluaran berhasil ditambahkan.');
     }

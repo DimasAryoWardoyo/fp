@@ -49,9 +49,9 @@
                                                             @csrf
                                                             <select name="status" class="form-select form-select-sm">
                                                                 <option disabled selected>Pilih Status</option>
-                                                                <option value="berlangsung" @selected($item->status === 'berlangsung')>Berlangsung</option>
+                                                                <option value="berlangsung" @selected($item->status === 'berlangsung')>Setujui</option>
+                                                                <option value="ditolak" @selected($item->status === 'ditolak')>Tolak</option>
                                                                 <option value="selesai" @selected($item->status === 'selesai')>Selesai</option>
-                                                                <option value="ditolak" @selected($item->status === 'ditolak')>Ditolak</option>
                                                             </select>
                                                             <button type="submit" class="btn btn-sm btn-primary">Edit</button>
 

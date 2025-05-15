@@ -21,29 +21,38 @@
                     @endif
 
                     {{-- Tombol Aksi --}}
-                    <div class="col-md-4 col-lg-4 mb-3">
+                    <div class="col-md-3 col-lg-3 mb-3">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body text-center bg-success rounded">
                                 <a href="{{ route('admin.finance.kas.create') }}" class="btn btn-success w-100">
-                                    + Tambah Kas
+                                    + add Kas
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 mb-3">
+                    <div class="col-md-3 col-lg-3 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center bg-warning rounded">
+                                <a href="{{ route('admin.finance.hutang') }}" class="btn btn-warning w-100">
+                                    Lihat hutang
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 mb-3">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body text-center bg-primary rounded">
                                 <a href="{{ route('admin.finance.dana_lain.create') }}" class="btn btn-primary w-100">
-                                    + Tambah Dana Lain
+                                    + add Dana Lain
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 mb-3">
+                    <div class="col-md-3 col-lg-3 mb-3">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body text-center bg-danger rounded">
                                 <a href="{{ route('admin.finance.pengeluaran.create') }}" class="btn btn-danger w-100">
-                                    + Tambah Pengeluaran
+                                    + add Pengeluaran
                                 </a>
                             </div>
                         </div>
@@ -57,7 +66,8 @@
                                     <table class="table table-bordered text-center align-middle">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Total Pemasukan</th>
+                                                <th>Total Kas</th>
+                                                <th>Total Dana Lain</th>
                                                 <th>Saldo Saat Ini</th>
                                                 <th>Total Pengeluaran</th>
                                             </tr>
@@ -71,7 +81,12 @@
                                                 </td>
                                                 <td class="rounded">
                                                     <h5>
-                                                        Rp {{ number_format($saldo, 0, ',', '.') }}
+                                                        Rp {{ number_format($saldoDanaLain, 0, ',', '.') }}
+                                                    </h5>
+                                                </td>
+                                                <td class="rounded">
+                                                    <h5>
+                                                        Rp {{ number_format($saldoAkhir, 0, ',', '.') }}
                                                     </h5>
                                                 </td>
                                                 <td class="rounded">

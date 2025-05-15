@@ -14,16 +14,18 @@ class AnggotaFinanceController extends Controller
         $user = Auth::user();
 
         // Kas pribadi user
-        $kasSaya = Kas::where('user_id', $user->id)->sum('jumlah');
+        $kasSaya = Kas::where('user_id', auth()->id())->get();
+
+        $totalKas = Kas::sum('jumlah');
 
         // Total semua pemasukan (kas semua user + dana lain)
-        $totalPemasukan = Kas::sum('jumlah') + DanaLain::sum('jumlah');
+        $totalPemasukan =  DanaLain::sum('jumlah');
 
         // Total semua pengeluaran
         $totalPengeluaran = Pengeluaran::sum('jumlah');
 
         // Saldo saat ini
-        $saldo = $totalPemasukan - $totalPengeluaran;
+        $saldo = $totalPemasukan + $totalKas;
 
         // Daftar pengeluaran untuk ditampilkan
         $pengeluaran = Pengeluaran::latest()->get();
@@ -33,6 +35,7 @@ class AnggotaFinanceController extends Controller
             'totalPemasukan',
             'totalPengeluaran',
             'saldo',
+            'totalKas',
             'pengeluaran'
         ));
     }

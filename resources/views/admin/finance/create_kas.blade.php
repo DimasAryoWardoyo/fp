@@ -12,37 +12,54 @@
                     <div class="col-md-12">
                         <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    @if(session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @endif
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover">
-                                            <thead class="table-secondary">
-                                                <tr class="text-center">
-                                                    <th>Nama</th>
-                                                    <th>kas masuk</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($users as $user)
-                                                    <tr>
-                                                        <td>{{ $user->name }}</td>
-                                                        <td>Rp {{ number_format($user->kas_sum_jumlah ?? 0, 0, ',', '.') }}</td>
+                                @if(session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
 
-                                                        <td class="text-center">
-                                                            <a href="{{ route('admin.finance.select', $user->id) }}"
-                                                                class="btn btn-sm btn-success">
-                                                                Tambah Kas
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                <form action="{{ route('admin.finance.kas.store') }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="tanggal" class="form-label">Tanggal</label>
+                                        <input type="date" name="tanggal" id="tanggal" class="form-control" required>
                                     </div>
-                                </div>
+
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-secondary text-center">
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Total Kas Masuk</th>
+                                                <th>Pilih Pembayar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($users as $user)
+                                                <tr class="text-center">
+                                                    <td>{{ $user->name }}</td>
+                                                    <td>Rp {{ number_format($user->kas_sum_jumlah ?? 0, 0, ',', '.') }}</td>
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="users[]"
+                                                                value="{{ $user->id }}" id="userCheck{{ $user->id }}">
+                                                            <label class="form-check-label" for="userCheck{{ $user->id }}">
+                                                                Bayar
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                    <div class="mb-3">
+                                        <label for="jumlah" class="form-label">Nominal Kas per Orang</label>
+                                        <input type="number" name="jumlah" id="jumlah" class="form-control" value="5000"
+                                            required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Simpan Kas</button>
+                                    <a href="{{ route('admin.finance.index') }}" class="btn btn-secondary">Kembali</a>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -50,5 +67,4 @@
             </div>
         </div>
     </div>
-
 @endsection

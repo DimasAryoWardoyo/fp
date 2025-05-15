@@ -114,11 +114,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/finance', [FinanceController::class, 'index'])->name('admin.finance.index');
     Route::get('/finance/kas/create', [FinanceController::class, 'createKas'])->name('admin.finance.kas.create');
     Route::post('/finance/kas/store', [FinanceController::class, 'storeKas'])->name('admin.finance.kas.store');
+    Route::get('/finance/kas/{user}/select', [FinanceController::class, 'selectKas'])->name('admin.finance.select');
+    Route::get('/finance/hutang', [FinanceController::class, 'daftarHutang'])->name('admin.finance.hutang');
+    Route::post('/finance/hutang/{id}/selesai', [FinanceController::class, 'selesaikanHutang'])->name('admin.finance.selesai_hutang');
     Route::get('/finance/dana-lain/create', [FinanceController::class, 'createDanaLain'])->name('admin.finance.dana_lain.create');
     Route::post('/finance/dana-lain/store', [FinanceController::class, 'storeDanaLain'])->name('admin.finance.dana_lain.store');
     Route::get('/finance/pengeluaran/create', [FinanceController::class, 'createPengeluaran'])->name('admin.finance.pengeluaran.create');
     Route::post('/finance/pengeluaran/store', [FinanceController::class, 'storePengeluaran'])->name('admin.finance.pengeluaran.store');
-    Route::get('/finance/kas/{user}/select', [FinanceController::class, 'selectKas'])->name('admin.finance.select');
 
     Route::get('/perlengkapan/create', [PerlengkapanController::class, 'create'])->name('perlengkapan.create');
     Route::post('/perlengkapan', [PerlengkapanController::class, 'store'])->name('perlengkapan.store');
@@ -141,6 +143,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // ===== KATEGORI =====
     Route::get('/content/category', [ContentController::class, 'createCategory'])->name('admin.content.kategori');
     Route::post('/content/kategori', [ContentController::class, 'storeCategory'])->name('admin.content.kategori.store');
+
+    Route::get('/struktur/create', [StrukturController::class, 'create'])->name('struktur.create');
+    Route::post('/struktur', [StrukturController::class, 'store'])->name('struktur.store');
+    Route::get('/struktur/{struktur}/edit', [StrukturController::class, 'edit'])->name('struktur.edit');
+    Route::put('/struktur/{struktur}', [StrukturController::class, 'update'])->name('struktur.update');
+    Route::delete('/struktur/{id}', [StrukturController::class, 'destroy'])->name('struktur.destroy');
 });
 
 

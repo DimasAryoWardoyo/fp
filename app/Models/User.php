@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Kas::class);
     }
+    public function hutangs()
+    {
+        return $this->hasMany(Hutang::class);
+    }
 }

@@ -12,9 +12,19 @@ class PeminjamanController extends Controller
     // Tampilkan semua peminjaman
     public function index()
     {
-        $perlengkapans = Perlengkapan::all();
-        return view('peminjaman.index', ['perlengkapans' => $perlengkapans]);
+        $perlengkapans = Perlengkapan::with([
+            'peminjamans' => function ($query) {
+                $query->where('status', 'berlangsung');
+            }
+        ])->get();
+
+        foreach ($perlengkapans as $item) {
+            $item->status = $item->peminjamans->count() > 0 ? 'Dipinjam' : 'Tersedia';
+        }
+
+        return view('peminjaman.index', compact('perlengkapans'));
     }
+
     public function create($id)
     {
         $perlengkapan = Perlengkapan::findOrFail($id);

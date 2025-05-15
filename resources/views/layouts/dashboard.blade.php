@@ -47,15 +47,15 @@
                     </a>
                     <a href="{{ route('perlengkapan.index') }}"
                         class="list-group-item list-group-item-action  {{ request()->is('perlengkapan*') || request()->is('peminjaman*') ? 'active' : '' }}">
-                        Perlengkapan & Peralatan
+                        Perlengkapan
                     </a>
-
+                    <a href="{{ route('struktur.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->is('struktur') || request()->is('admin/struktur*') ? 'active' : '' }}">
+                        Struktur Karang Taruna
+                    </a>
                     {{-- Anggota Layouts --}}
                     @can('anggota')
-                        <a href="{{ route('struktur.index') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('struktur') ? 'active' : '' }}">
-                            Struktur Karang Taruna
-                        </a>
+
                         <a href="{{ route('overview') }}"
                             class="list-group-item list-group-item-action {{ request()->is('overview*') ? 'active' : '' }}">
                             Keuangan
