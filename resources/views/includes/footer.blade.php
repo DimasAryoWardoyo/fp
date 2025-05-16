@@ -1,6 +1,6 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" style="background-color: rgba(245, 245, 251, 1)">
-    <div class="footer-top">
+    {{-- <div class="footer-top">
         <div class="container">
             <div class="row" style="margin-top: 50px;">
                 <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="100">
@@ -69,12 +69,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="container text-center">
-        <div class="copyright"> © Copyright <strong><span>Pnomsticklite</span></strong>. All Rights Reserved</div>
-        <div style="margin-bottom: 20px;" class="credits"> Designed by<a style="color: #000000;" href="#"> Dimas
-                Wardoyo</a></div>
+        <div class="copyright"> © Copyright <strong><span>KlatenAsyik</span></strong>. All Rights Reserved</div>
+        <div style="margin-bottom: 20px;" class="credits"> Designed by<a style="color: #000000;" href="#"> Anak Muda</a>
+        </div>
     </div>
 </footer>
 <!-- End Footer -->

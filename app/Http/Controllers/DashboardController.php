@@ -16,16 +16,15 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'admin') {
-            $totalKas = Kas::sum('jumlah') + DanaLain::sum('jumlah');
+            $totalKas = Kas::sum('jumlah');
+            $danaLain = DanaLain::sum('jumlah');
             $totalPengeluaran = Pengeluaran::sum('jumlah');
-            $saldo = $totalKas - $totalPengeluaran;
             $anggota = User::where('role', 'anggota')->count();
             $kasSaya = $totalKas; // agar bisa dipakai di tampilan admin
         } else {
-            $totalKas = Kas::sum('jumlah') + DanaLain::sum('jumlah');
-            $kasSaya = Kas::where('user_id', $user->id)->sum('jumlah');
+            $totalKas = Kas::sum('jumlah');
+            $danaLain = DanaLain::sum('jumlah');
             $totalPengeluaran = Pengeluaran::sum('jumlah');
-            $saldo = $totalKas - $totalPengeluaran;
             $anggota = null;
         }
 
@@ -40,10 +39,10 @@ class DashboardController extends Controller
             });
 
         return view('dashboard.index', compact(
-            'kasSaya',
             'totalPengeluaran',
-            'saldo',
             'anggota',
+            'danaLain',
+            'totalKas',
             'events'
         ));
     }

@@ -30,7 +30,11 @@ use App\Http\Controllers\FinanceController;
 // ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kategori/{id}', [HomeController::class, 'kategori'])->name('kategori.show');
+Route::get('/kategori', [HomeController::class, 'kategoryPage'])->name('kategori');
 Route::get('/konten/{id}', [HomeController::class, 'show'])->name('konten.show');
+Route::get('/keanggotaan', [HomeController::class, 'keanggotaan'])->name('keanggotaan');
+route::get('/tentang-kami', [HomeController::class, 'tentang'])->name('tentangKami');
+
 
 
 

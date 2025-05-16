@@ -16,23 +16,38 @@ class FinanceController extends Controller
 {
     public function index()
     {
+        // Kas pribadi user
         $kasSaya = Kas::where('user_id', auth()->id())->get();
 
-        // Total pemasukan = kas + dana lain
+        // total kas
         $totalKas = Kas::sum('jumlah');
 
         $saldoDanaLain = DanaLain::sum('jumlah');
 
-        // Ambil semua pengeluaran
+        // semua pengeluaran
         $pengeluaran = Pengeluaran::all();
 
-        // Hitung total pengeluaran
+        // total pengeluaran
         $totalPengeluaran = Pengeluaran::sum('jumlah');
 
-        // Hitung saldo akhir
+        // saldo akhir
         $saldoAkhir = $totalKas + $saldoDanaLain;
 
-        return view('admin.finance.index', compact('kasSaya', 'totalKas', 'saldoDanaLain', 'pengeluaran', 'totalPengeluaran', 'saldoAkhir'));
+        
+        $hutangs = Hutang::with('user')
+            ->where('user_id', auth()->id())
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('admin.finance.index', compact(
+            'kasSaya',
+            'totalKas',
+            'saldoDanaLain',
+            'pengeluaran',
+            'totalPengeluaran',
+            'saldoAkhir',
+            'hutangs'
+        ));
     }
 
     // ============================== Kas Method ==============================

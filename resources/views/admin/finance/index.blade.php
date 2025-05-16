@@ -98,10 +98,42 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {{-- Tabel Hutang --}}
+                                <h5 class="mt-2">Daftar Hutang</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center align-middle table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Tanggal</th>
+                                                <th>Jumlah</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($hutangs as $hutang)
+                                                <tr>
+                                                    <td>{{ $hutang->user->name }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($hutang->tanggal)->format('d M Y') }}</td>
+                                                    <td class="text-danger font-weight-bold">Rp
+                                                        -{{ number_format($hutang->jumlah, 0, ',', '.') }}</td>
+                                                    <td>{{ $hutang->keterangan }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">Tidak ada hutang
+                                                        tercatat.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
                                 {{-- Tabel Kas Saya --}}
                                 <h5 class="mt-3">Kas Saya</h5>
                                 <div class="table-responsive">
-                                    <table class="table  text-center align-middle table-striped">
+                                    <table class="table table-bordered text-center align-middle table-hover">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Tanggal</th>
@@ -118,7 +150,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3" class="text-center text-muted">Belum ada data kas.</td>
+                                                    <td colspan="5" class="text-center text-muted">Belum ada data kas.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
@@ -162,7 +194,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="4" class="text-center text-muted">Tidak ada pengeluaran
+                                                    <td colspan="5" class="text-center text-muted">Tidak ada pengeluaran
                                                         tercatat.</td>
                                                 </tr>
                                             @endforelse

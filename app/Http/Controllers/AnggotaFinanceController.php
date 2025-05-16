@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hutang;
 use App\Models\Kas;
 use App\Models\DanaLain;
 use App\Models\Pengeluaran;
@@ -19,7 +20,7 @@ class AnggotaFinanceController extends Controller
         $totalKas = Kas::sum('jumlah');
 
         // Total semua pemasukan (kas semua user + dana lain)
-        $totalPemasukan =  DanaLain::sum('jumlah');
+        $totalPemasukan = DanaLain::sum('jumlah');
 
         // Total semua pengeluaran
         $totalPengeluaran = Pengeluaran::sum('jumlah');
@@ -30,13 +31,19 @@ class AnggotaFinanceController extends Controller
         // Daftar pengeluaran untuk ditampilkan
         $pengeluaran = Pengeluaran::latest()->get();
 
+        $hutangs = Hutang::with('user')
+            ->where('user_id', auth()->id())
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
         return view('anggota.finance.overview', compact(
             'kasSaya',
             'totalPemasukan',
             'totalPengeluaran',
             'saldo',
             'totalKas',
-            'pengeluaran'
+            'pengeluaran',
+            'hutangs'
         ));
     }
     public function show($id)

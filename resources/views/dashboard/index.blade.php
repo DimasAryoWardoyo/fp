@@ -18,9 +18,9 @@
                     @if(Auth::user()->role == 'admin')
                         @php
                             $adminCards = [
-                                ['title' => 'Total Pemasukan', 'value' => $kasSaya],
+                                ['title' => 'Total Kas', 'value' => $totalKas],
+                                ['title' => 'Total Saldo', 'value' => $danaLain],
                                 ['title' => 'Total Pengeluaran', 'value' => $totalPengeluaran],
-                                ['title' => 'Saldo Kas', 'value' => $saldo],
                                 ['title' => 'Jumlah Anggota', 'value' => $anggota, 'isCurrency' => false],
                             ];
                         @endphp
@@ -44,8 +44,8 @@
                     @else
                         @php
                             $anggotaCards = [
-                                ['title' => 'Kas Saya', 'value' => $kasSaya],
-                                ['title' => 'Saldo Kas', 'value' => $saldo],
+                                ['title' => 'Saldo Kas', 'value' => $totalKas],
+                                ['title' => 'Saldo Lain', 'value' => $danaLain],
                                 ['title' => 'Total Pengeluaran', 'value' => $totalPengeluaran],
                             ];
                         @endphp

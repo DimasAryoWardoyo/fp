@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Identitas;
 use App\Models\Kategori;
 use App\Models\Konten;
+use App\Models\Struktur;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,11 +33,28 @@ class HomeController extends Controller
 
         return view('page.kategori', compact('kategori', 'kontens', 'categories'));
     }
-    
+
     public function show($id)
     {
         $konten = Konten::with('kategori')->findOrFail($id);
         return view('page.detail', compact('konten'));
     }
 
+    public function kategoryPage()
+    {
+        $kategoris = Kategori::all();
+        $kontens = Konten::all();
+        return view('page.page_kategori', compact('kategoris', 'kontens'));
+    }
+
+    public function keanggotaan()
+    {
+        $user = User::with('identitas')->get();
+        $strukturs = Struktur::with('user')->get();
+        return view('page.keanggotaan', compact('strukturs', 'user'));
+    }
+    public function tentang()
+    {
+        return view('page.tentang_kami');
+    }
 }
