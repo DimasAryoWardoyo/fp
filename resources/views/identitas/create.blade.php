@@ -11,6 +11,7 @@
                 <div class="card-body">
                     <form action="{{ route('identitas.store') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>No WhatsApp</label>

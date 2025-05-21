@@ -57,13 +57,13 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard & Profil
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [IdentitasController::class, 'index'])->name('identitas.index');
+    
     Route::get('/edit-profile', [UserController::class, 'editProfile'])->name('identitas.user.edit-profile');
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('user.update-profile');
 
     Route::get('/identitas/{identitas}/edit', [IdentitasController::class, 'edit'])->name('identitas.edit');
     Route::put('/identitas/{identitas}', [IdentitasController::class, 'update'])->name('identitas.update');
 
-    // Identitas
     Route::resource('identitas', IdentitasController::class)->except(['show']);
 
     // Struktur Organisasi
@@ -147,6 +147,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // ===== KATEGORI =====
     Route::get('/content/category', [ContentController::class, 'createCategory'])->name('admin.content.kategori');
     Route::post('/content/kategori', [ContentController::class, 'storeCategory'])->name('admin.content.kategori.store');
+    Route::get('/content/kategori/{id}/edit', [ContentController::class, 'editCategory'])->name('admin.content.kategori.edit');
+    Route::put('/content/kategori/{id}', [ContentController::class, 'updateCategory'])->name('admin.content.kategori.update');
+    Route::delete('/content/kategori/{id}', [ContentController::class, 'destroyCategory'])->name('admin.content.kategori.destroy');
+    Route::get('/content/kategori/banner-create', [ContentController::class, 'bannerCreate'])->name('admin.content.banneer-create');
+    Route::post('/content/kategori/banner', [ContentController::class, 'bannerStore'])->name('admin.content.banner.store');
+    Route::get('/content/banner/{id}/edit', [ContentController::class, 'bannerEdit'])->name('admin.content.banner.edit');
+    Route::put('/content/banner/{id}', [ContentController::class, 'bannerUpdate'])->name('admin.content.banner.update');
+    Route::delete('/content/banner/{id}', [ContentController::class, 'bannerDestroy'])->name('admin.content.banner.destroy');
 
     Route::get('/struktur/create', [StrukturController::class, 'create'])->name('struktur.create');
     Route::post('/struktur', [StrukturController::class, 'store'])->name('struktur.store');

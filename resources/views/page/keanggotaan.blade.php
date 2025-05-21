@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Struktur Organisasi - Karang Taruna Klaten Asyik')
 
 @section('content')
     <div class="page-content page-home" data-aos="fade-up">

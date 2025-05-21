@@ -1,4 +1,5 @@
 @extends('layouts.dashboard')
+@section('title', 'Dashboard - Karang Taruna Klaten Asyik')
 
 @section('content')
     {{-- Content --}}

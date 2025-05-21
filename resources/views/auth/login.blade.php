@@ -5,12 +5,9 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Kendali</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
-
-    <title>@yield('title')</title>
-
+    <title>Login</title>
     {{-- Style --}}
     @stack('prepend-style')
     @include('includes.style')
@@ -25,12 +22,11 @@
             <div class="container">
                 <div class="row align-items-center row-login">
                     <div class="col-lg-6 text-center">
-                        <img src="{{ url('/images/logo.svg') }}" class="w-50 mb-4 mb-lg-none" alt="Logo" />
+                        <img src="{{ url('/images/lg.svg') }}" class="w-50 mb-4 mb-lg-none" alt="Logo" />
                     </div>
                     <div class="col-lg-5">
                         <h2>
-                            Silahkan masuk, <br />
-                            untuk melakukan Konsultasi
+                            Login Anggota Karang Taruna
                         </h2>
                         <form action="{{ route('login') }}" method="POST" class="mt-3">
                             @csrf

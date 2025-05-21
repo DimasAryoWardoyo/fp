@@ -76,11 +76,11 @@
                             class="list-group-item list-group-item-action {{ request()->is('admin/content*') ? 'active' : '' }}">
                             Edit Konten
                         </a>
-                        <a href="{{ route('home') }}"
-                            class="list-group-item list-group-item-action {{ request()->is('home*') ? 'active' : '' }}">
-                            Home
-                        </a>
                     @endcan
+                    <a href="{{ route('home') }}"
+                        class="list-group-item list-group-item-action {{ request()->is('home*') ? 'active' : '' }}">
+                        Home
+                    </a>
 
                     <form action="{{ route('logout') }}" method="post">
                         @csrf

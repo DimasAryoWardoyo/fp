@@ -1,4 +1,5 @@
 @extends('layouts.dashboard')
+@section('title', 'Profile - Karang Taruna Klaten Asyik')
 
 @section('content')
     <div class="section-content section-dashboard-home">

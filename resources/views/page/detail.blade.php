@@ -1,11 +1,18 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-@section('title')
-    Detail Konten
-@endsection
+    <title>{{ $konten->nama_konten }}</title>
 
-@section('content')
-    <div class="page-content page-details">
+    @stack('prepend-style')
+    @include('includes.style')
+    @stack('addon-style')
+</head>
+<body>
+    <div class="page-details mt-4">
         <section class="store-breadcrumbs" data-aos="fade-down" data-aos-delay="100">
             <div class="container">
                 <div class="row">
@@ -13,8 +20,10 @@
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ url('/') }}">Home</a>
-                                </li>
+                                    <a href="{{ url()->previous() }}" class="link-hover">
+                                        Kembali
+                                        </a>
+                                    </li>
                                 <li class="breadcrumb-item active">
                                     {{ $konten->nama_konten }}
                                 </li>
@@ -36,7 +45,7 @@
                     <div class="col-lg-2">
                         <div class="row">
                             <div class="col-3 col-lg-12 mt-2 mt-lg-0" v-for="(photo, index) in photos" :key="photo.id" data-aos="zoom-in" data-aos-delay="100">
-                                <a href="#" @click="changeActive(index)">
+                                <a href="#" @click.prevent="changeActive(index)">
                                     <img :src="photo.url" class="w-100 thumbnail-image" :class="{ active: index == activePhoto }" alt="">
                                 </a>
                             </div>
@@ -70,9 +79,14 @@
             </section>
         </div>
     </div>
-@endsection
 
-@push('addon-script')
+    @include('includes.footer')
+
+    {{-- Script --}}
+    @stack('prepend-script')
+    @include('includes.script')
+    @stack('addon-script')
+
     <script src="/vendor/vue/vue.js"></script>
     <script>
         var gallery = new Vue({
@@ -104,4 +118,5 @@
             },
         });
     </script>
-@endpush
+</body>
+</html>

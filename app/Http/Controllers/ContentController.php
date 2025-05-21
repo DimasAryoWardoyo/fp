@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Kategori;
 use App\Models\Konten;
 use Illuminate\Http\Request;
@@ -12,8 +13,10 @@ class ContentController extends Controller
     // Menampilkan halaman utama content
     public function index()
     {
-        $kontens = Konten::with('kategori')->latest()->get();
-        return view('content.index', compact('kontens'));
+        $banners = Banner::latest()->get();
+        $kontens = Konten::latest()->get();
+        $kategoris = Kategori::all();
+        return view('content.index', compact('kontens', 'banners', 'kategoris'));
     }
 
     // ================== KATEGORI =====================
@@ -38,6 +41,49 @@ class ContentController extends Controller
         ]);
 
         return redirect()->route('admin.content.index')->with('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    public function editCategory($id)
+    {
+        $kategori = Kategori::findOrFail($id);
+        return view('admin.content.kategori-edit', compact('kategori'));
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $request->validate([
+            'nama_kategori' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $kategori = Kategori::findOrFail($id);
+        $kategori->nama_kategori = $request->nama_kategori;
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($kategori->gambar && Storage::disk('public')->exists($kategori->gambar)) {
+                Storage::disk('public')->delete($kategori->gambar);
+            }
+
+            $kategori->gambar = $request->file('gambar')->store('kategori', 'public');
+        }
+
+        $kategori->save();
+
+        return redirect()->route('admin.content.index')->with('success', 'Kategori berhasil diperbarui.');
+    }
+
+    public function destroyCategory($id)
+    {
+        $kategori = Kategori::findOrFail($id);
+
+        if ($kategori->gambar && Storage::disk('public')->exists($kategori->gambar)) {
+            Storage::disk('public')->delete($kategori->gambar);
+        }
+
+        $kategori->delete();
+
+        return back()->with('success', 'Kategori berhasil dihapus.');
     }
 
     // ================== KONTEN =====================
@@ -128,5 +174,62 @@ class ContentController extends Controller
         $konten->delete();
 
         return redirect()->route('admin.content.index')->with('success', 'Konten berhasil dihapus.');
+    }
+
+    // ================== BANNER =====================
+
+    public function bannerCreate()
+    {
+        return view('content.banner_create');
+    }
+    public function bannerStore(Request $request)
+    {
+        $request->validate([
+            'gambar_banner' => 'required|image|mimes:jpg,jpeg,png,svg|max:5048',
+        ]);
+
+        $path = $request->file('gambar_banner')->store('banner', 'public');
+
+        Banner::create([
+            'gambar' => $path,
+        ]);
+
+        return redirect()->route('admin.content.index')->with('success', 'Banner berhasil ditambahkan.');
+    }
+    public function bannerEdit($id)
+    {
+        $banner = Banner::findOrFail($id);
+        return view('admin.content.banner-edit', compact('banner'));
+    }
+
+    public function bannerUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'gambar_banner' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $banner = Banner::findOrFail($id);
+
+        // Jika user upload gambar baru, hapus gambar lama dan simpan baru
+        if ($request->hasFile('gambar_banner')) {
+            Storage::disk('public')->delete($banner->gambar);
+
+            $path = $request->file('gambar_banner')->store('banner', 'public');
+            $banner->update(['gambar' => $path]);
+        }
+
+        return redirect()->route('admin.content.index')->with('success', 'Banner berhasil diupdate.');
+    }
+    public function bannerDestroy($id)
+    {
+        $banner = Banner::findOrFail($id);
+
+        // Hapus file dari storage
+        Storage::disk('public')->delete($banner->gambar);
+
+        // Hapus data dari database
+        $banner->delete();
+
+        return redirect()->route('admin.content.index')->with('success', 'Banner berhasil dihapus.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Identitas;
 use App\Models\Kategori;
 use App\Models\Konten;
@@ -16,8 +17,8 @@ class HomeController extends Controller
         // Ambil semua konten terbaru dan semua kategori
         $kontens = Konten::latest()->get();
         $kategoris = Kategori::all();
-
-        return view('page.home', compact('kontens', 'kategoris'));
+        $banners = Banner::all();
+        return view('page.home', compact('kontens', 'kategoris', 'banners'));
     }
 
     /**

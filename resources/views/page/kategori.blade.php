@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Trend Categories - Karang Taruna Klaten Asyik')
 
 @section('content')
     <div class="page-content page-home">
