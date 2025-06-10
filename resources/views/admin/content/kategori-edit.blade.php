@@ -29,11 +29,11 @@
                                     {{-- Gambar --}}
                                     <div class="mb-3">
                                         <label for="gambar" class="form-label">Gambar Kategori (opsional)</label>
-                                        <input type="file" name="gambar" id="gambar" class="form-control">
-                                        @if ($kategori->gambar)
+                                        <input type="file" name="gambar_kategori" id="gambar_kategori" class="form-control">
+                                        @if ($kategori->gambar_kategori)
                                             <div class="mt-2">
                                                 <p class="mb-1">Gambar saat ini:</p>
-                                                <img src="{{ asset('storage/' . $kategori->gambar) }}" width="150"
+                                                <img src="{{ asset('storage/' . $kategori->gambar_kategori) }}" width="150"
                                                     class="img-thumbnail">
                                             </div>
                                         @endif

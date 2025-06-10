@@ -28,15 +28,16 @@ class DashboardController extends Controller
             $anggota = null;
         }
 
-        // Ambil agenda yang belum selesai dan statusnya Akan Datang / Sedang Berlangsung
-        $events = Agenda::whereDate('waktu_selesai', '>=', now())
+        // hanya kegiatan yang akan datang atau sedang berlangsung
+        $events = Agenda::where('kategori', 'kegiatan')
+            ->whereDate('waktu_selesai', '>=', now())
             ->orderBy('waktu_mulai', 'asc')
-            ->orderBy('nama_agenda', 'asc')
-            ->orderBy('lokasi', 'asc')
             ->get()
             ->filter(function ($agenda) {
                 return in_array($agenda->status, ['Akan Datang', 'Sedang Berlangsung']);
             });
+
+
 
         return view('dashboard.index', compact(
             'totalPengeluaran',
@@ -44,6 +45,7 @@ class DashboardController extends Controller
             'danaLain',
             'totalKas',
             'events'
+
         ));
     }
 }

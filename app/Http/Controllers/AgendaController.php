@@ -32,14 +32,40 @@ class AgendaController extends Controller
     {
         $request->validate([
             'nama_agenda' => 'required|string',
+            'kategori' => 'required|in:kegiatan,rapat',
             'deskripsi' => 'required',
             'waktu_mulai' => 'required|date',
             'waktu_selesai' => 'required|date|after:waktu_mulai',
             'lokasi' => 'required|string',
         ]);
 
-        Agenda::create($request->all());
+        if ($request->kategori === 'kegiatan') {
+            $request->validate([
+                'foto' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            ]);
+        } else {
+            $request->validate([
+                'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            ]);
+        }
+
+        $data = $request->only([
+            'nama_agenda',
+            'kategori',
+            'deskripsi',
+            'waktu_mulai',
+            'waktu_selesai',
+            'lokasi'
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('foto_agenda', 'public');
+        }
+
+        Agenda::create($data);
 
         return redirect()->route('agenda.index')->with('success', 'Agenda berhasil dibuat');
     }
+
+
 }

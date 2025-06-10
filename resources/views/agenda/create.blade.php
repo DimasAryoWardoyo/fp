@@ -21,7 +21,7 @@
                         @endif
                         <div class="card shadow-sm border-0">
                             <div class="card-body">
-                                <form action="{{ route('agenda.store') }}" method="POST">
+                                <form action="{{ route('agenda.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="mb-3">
@@ -75,6 +75,24 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <!-- Input Kategori -->
+                                    <div class="mb-3">
+                                        <label for="kategori" class="form-label">Kategori</label>
+                                        <select name="kategori" id="kategori" class="form-control" required
+                                            onchange="toggleFotoInput()">
+                                            <option value="">-- Pilih Kategori --</option>
+                                            <option value="kegiatan" {{ old('kategori') === 'kegiatan' ? 'selected' : '' }}>
+                                                Kegiatan</option>
+                                            <option value="rapat" {{ old('kategori') === 'rapat' ? 'selected' : '' }}>Rapat
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Input Foto (default: hidden) -->
+                                    <div class="mb-3" id="foto-container" style="display: none;">
+                                        <label for="foto" class="form-label">Foto Kegiatan</label>
+                                        <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                                    </div>
 
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('agenda.index') }}" class="btn btn-danger">Kembali</a>
@@ -88,4 +106,22 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleFotoInput() {
+            const kategori = document.getElementById('kategori').value;
+            const fotoContainer = document.getElementById('foto-container');
+
+            if (kategori === 'kegiatan') {
+                fotoContainer.style.display = 'block';
+            } else {
+                fotoContainer.style.display = 'none';
+            }
+        }
+
+        // Saat halaman pertama kali dimuat, pastikan sesuai nilai select
+        document.addEventListener("DOMContentLoaded", function () {
+            toggleFotoInput();
+        });
+    </script>
+
 @endsection

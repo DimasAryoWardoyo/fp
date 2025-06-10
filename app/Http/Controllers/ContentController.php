@@ -26,6 +26,10 @@ class ContentController extends Controller
         return view('content.category.create');
     }
 
+    /**
+     * Fungsi untuk menyimpan kategori baru
+     * Validasi nama & gambar, lalu simpan ke storage dan database
+     */
     public function storeCategory(Request $request)
     {
         $request->validate([
@@ -51,34 +55,37 @@ class ContentController extends Controller
 
     public function updateCategory(Request $request, $id)
     {
+        $kategori = Kategori::findOrFail($id);
+
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar_kategori' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
         ]);
 
-        $kategori = Kategori::findOrFail($id);
         $kategori->nama_kategori = $request->nama_kategori;
 
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            if ($kategori->gambar && Storage::disk('public')->exists($kategori->gambar)) {
-                Storage::disk('public')->delete($kategori->gambar);
+        if ($request->hasFile('gambar_kategori')) {
+            // Hapus gambar lama
+            if ($kategori->gambar_kategori && Storage::disk('public')->exists($kategori->gambar_kategori)) {
+                Storage::disk('public')->delete($kategori->gambar_kategori);
             }
 
-            $kategori->gambar = $request->file('gambar')->store('kategori', 'public');
+            $path = $request->file('gambar_kategori')->store('kategori', 'public');
+            $kategori->gambar_kategori = $path;
         }
 
         $kategori->save();
 
-        return redirect()->route('admin.content.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('admin.content.index')->with('success', 'Kategori berhasil diupdate.');
     }
+
 
     public function destroyCategory($id)
     {
         $kategori = Kategori::findOrFail($id);
 
-        if ($kategori->gambar && Storage::disk('public')->exists($kategori->gambar)) {
-            Storage::disk('public')->delete($kategori->gambar);
+        if ($kategori->gambar_kategori && Storage::disk('public')->exists($kategori->gambar_kategori)) {
+            Storage::disk('public')->delete($kategori->gambar_kategori);
         }
 
         $kategori->delete();
@@ -86,14 +93,16 @@ class ContentController extends Controller
         return back()->with('success', 'Kategori berhasil dihapus.');
     }
 
-    // ================== KONTEN =====================
-
     public function create()
     {
         $kategoris = Kategori::all();
         return view('content.create', compact('kategoris'));
     }
 
+    /**
+     * Fungsi untuk menyimpan konten baru
+     * Validasi input dan upload 3 gambar, lalu simpan ke database
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -108,9 +117,10 @@ class ContentController extends Controller
 
         $data = $request->only(['kategori_id', 'nama_konten', 'tanggal_konten', 'deskripsi']);
 
-        $data['gambar1'] = $request->file('gambar1')->store('konten', 'public');
-        $data['gambar2'] = $request->file('gambar2')->store('konten', 'public');
-        $data['gambar3'] = $request->file('gambar3')->store('konten', 'public');
+        // Simpan masing-masing gambar ke storage
+        foreach (['gambar1', 'gambar2', 'gambar3'] as $field) {
+            $data[$field] = $request->file($field)->store('konten', 'public');
+        }
 
         Konten::create($data);
 
@@ -144,10 +154,7 @@ class ContentController extends Controller
             'gambar3' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $konten->kategori_id = $request->kategori_id;
-        $konten->nama_konten = $request->nama_konten;
-        $konten->tanggal_konten = $request->tanggal_konten;
-        $konten->deskripsi = $request->deskripsi;
+        $konten->fill($request->only(['kategori_id', 'nama_konten', 'tanggal_konten', 'deskripsi']));
 
         foreach (['gambar1', 'gambar2', 'gambar3'] as $gambarField) {
             if ($request->hasFile($gambarField)) {
@@ -166,7 +173,7 @@ class ContentController extends Controller
         $konten = Konten::findOrFail($id);
 
         foreach (['gambar1', 'gambar2', 'gambar3'] as $gambarField) {
-            if ($konten->$gambarField) {
+            if ($konten->$gambarField && Storage::disk('public')->exists($konten->$gambarField)) {
                 Storage::disk('public')->delete($konten->$gambarField);
             }
         }
@@ -182,6 +189,11 @@ class ContentController extends Controller
     {
         return view('content.banner_create');
     }
+
+    /**
+     * Fungsi untuk menyimpan banner baru
+     * Validasi dan upload gambar, lalu simpan ke database
+     */
     public function bannerStore(Request $request)
     {
         $request->validate([
@@ -196,6 +208,7 @@ class ContentController extends Controller
 
         return redirect()->route('admin.content.index')->with('success', 'Banner berhasil ditambahkan.');
     }
+
     public function bannerEdit($id)
     {
         $banner = Banner::findOrFail($id);
@@ -210,9 +223,10 @@ class ContentController extends Controller
 
         $banner = Banner::findOrFail($id);
 
-        // Jika user upload gambar baru, hapus gambar lama dan simpan baru
         if ($request->hasFile('gambar_banner')) {
-            Storage::disk('public')->delete($banner->gambar);
+            if ($banner->gambar && Storage::disk('public')->exists($banner->gambar)) {
+                Storage::disk('public')->delete($banner->gambar);
+            }
 
             $path = $request->file('gambar_banner')->store('banner', 'public');
             $banner->update(['gambar' => $path]);
@@ -220,14 +234,15 @@ class ContentController extends Controller
 
         return redirect()->route('admin.content.index')->with('success', 'Banner berhasil diupdate.');
     }
+
     public function bannerDestroy($id)
     {
         $banner = Banner::findOrFail($id);
 
-        // Hapus file dari storage
-        Storage::disk('public')->delete($banner->gambar);
+        if ($banner->gambar && Storage::disk('public')->exists($banner->gambar)) {
+            Storage::disk('public')->delete($banner->gambar);
+        }
 
-        // Hapus data dari database
         $banner->delete();
 
         return redirect()->route('admin.content.index')->with('success', 'Banner berhasil dihapus.');

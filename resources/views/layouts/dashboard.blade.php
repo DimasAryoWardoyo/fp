@@ -25,7 +25,9 @@
             {{-- Sidebar --}}
             <div class="list-group list-group-flush" id="sidebar-wrapper">
                 <div class="sidebar-heading text-center py-3">
-                    <img src="{{ url('/images/lg.png') }}" class="my-2" alt="Logo" style="max-width: 100px;">
+                    <a href="{{ url('/') }}" >
+                        <img src="{{ url('/images/lg.png') }}" class="my-2" alt="Logo" style="max-width: 100px;">
+                    </a>
                 </div>
                 <div class="list-group list-group-flush">
                     <a href="{{ route('dashboard') }}"
@@ -38,7 +40,7 @@
                     </a>
                     <a href="{{ route('agenda.index') }}"
                         class="list-group-item list-group-item-action {{ request()->is('agenda*') || request()->is('admin/agenda*') ? 'active' : '' }}">
-                        Agenda Rapat
+                        Agenda
                     </a>
 
                     {{-- Layout untuk Anggota --}}
@@ -77,11 +79,6 @@
                             Edit Konten
                         </a>
                     @endcan
-                    <a href="{{ route('home') }}"
-                        class="list-group-item list-group-item-action {{ request()->is('home*') ? 'active' : '' }}">
-                        Home
-                    </a>
-
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
                         <button class="list-group-item list-group-item-action" type="submit">

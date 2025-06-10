@@ -10,11 +10,12 @@ class Agenda extends Model
 {
     protected $fillable = [
         'nama_agenda',
+        'kategori',
         'deskripsi',
         'waktu_mulai',
         'waktu_selesai',
         'lokasi',
-        'presensi_open'
+        'foto',
     ];
 
     protected $casts = [

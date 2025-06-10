@@ -9,31 +9,43 @@
             <div class="dashboard-content">
                 <div class="card mb-2 mt-4">
                     <div class="card-body">
+
                         <table class="table table-bordered table-striped mb-4">
                             <tr>
-                                <td style="width: 150px;"><strong>Nama Agenda</strong></td>
-                                <td style="width: 10px;">:</td>
+                                <td style="width: 180px;"><strong>Nama Agenda</strong></td>
                                 <td>{{ $agenda->nama_agenda }}</td>
                             </tr>
                             <tr>
+                                <td><strong>Kategori</strong></td>
+                                <td>{{ ucfirst($agenda->kategori) }}</td>
+                            </tr>
+                            <tr>
                                 <td><strong>Lokasi</strong></td>
-                                <td>:</td>
                                 <td>{{ $agenda->lokasi }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Waktu Mulai</strong></td>
-                                <td>:</td>
-                                <td>{{ \Carbon\Carbon::parse($agenda->waktu_mulai)->format('d-m-Y H:i') }}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Waktu Selesai</strong></td>
-                                <td>:</td>
-                                <td>{{ \Carbon\Carbon::parse($agenda->waktu_selesai)->format('d-m-Y H:i') }}</td>
+                                <td><strong>Waktu</strong></td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($agenda->waktu_mulai)->format('d-m-Y H:i') }}
+                                    -
+                                    {{ \Carbon\Carbon::parse($agenda->waktu_selesai)->format('d-m-Y H:i') }}
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Deskripsi</strong></td>
-                                <td>:</td>
                                 <td>{{ $agenda->deskripsi }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Foto</strong></td>
+                                <td>
+                                    @if($agenda->foto)
+                                        <img src="{{ asset('storage/' . $agenda->foto) }}" alt="Foto Agenda"
+                                            style="max-width: 300px;" class="img-fluid mt-2">
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
                         </table>
                         @php
                             $user = Auth::user(); // pastikan user login

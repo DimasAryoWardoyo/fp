@@ -129,16 +129,14 @@
                                                     <td>{{ $kategori->nama_kategori }}</td>
                                                     <td>
                                                         @if($kategori->gambar_kategori)
-                                                            <img src="{{ asset('storage/' . $kategori->gambar_kategori) }}"
+                                                            <img src="{{ asset('storage/' . $kategori->gambar_kategori) }}?v={{ $kategori->updated_at->timestamp }}"
                                                                 class="img-thumbnail"
                                                                 style="max-width: 100px; max-height: 100px; object-fit: cover;"
                                                                 alt="{{ $kategori->nama_kategori }}">
-
                                                         @else
                                                             <span class="text-muted">Tidak ada gambar</span>
                                                         @endif
                                                     </td>
-
                                                     <td>
                                                         <a href="{{ route('admin.content.kategori.edit', $kategori->id) }}"
                                                             class="btn btn-warning btn-sm">Edit</a>

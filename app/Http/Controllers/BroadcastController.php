@@ -10,23 +10,23 @@ class BroadcastController extends Controller
 {
     public function index()
     {
-        return view('broadcast.form');
+        $anggota = Identitas::with('user')->whereNotNull('no_whatsapp')->get();
+        return view('broadcast.form', compact('anggota'));
     }
 
     public function send(Request $request)
     {
         $request->validate([
-            'message' => 'required|string'
+            'message' => 'required|string',
+            'selected_numbers' => 'required|array',
         ]);
 
-        $identitasList = Identitas::whereNotNull('no_whatsapp')->get();
-        foreach ($identitasList as $identitas) {
-            $this->sendWA($identitas->no_whatsapp, $request->message);
+        foreach ($request->selected_numbers as $phone) {
+            $this->sendWA($phone, $request->message);
         }
 
         return back()->with('success', 'Pesan broadcast berhasil dikirim!');
     }
-
     private function sendWA($phone, $message)
     {
         $token = env('FONNTE_API_TOKEN');
