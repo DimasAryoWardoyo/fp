@@ -17,8 +17,6 @@
             <div class="card mb-4 mt-4">
                 <div class="card-body">
                     <div class="mb-3">
-                        <button id="btn-print" class="btn btn-primary">Print</button>
-                        <button id="btn-excel" class="btn btn-success">Export Excel</button>
                     </div>
 
                     <table id="presensi-table" class="table table-bordered mt-3">
@@ -31,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($presensi as $index => $data)
+                            @foreach ($presensi as $index => $data)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $data->user->name ?? 'Tidak Diketahui' }}</td>
@@ -57,11 +55,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const table = $('#presensi-table').DataTable({
                 dom: 'Bfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'excelHtml5',
                         title: 'Daftar Presensi - {{ $agenda->nama_agenda }}',
                         exportOptions: {
@@ -89,11 +86,11 @@
             });
 
             // Jalankan tombol berdasarkan index: 0 = excel, 1 = print
-            $('#btn-excel').on('click', function () {
+            $('#btn-excel').on('click', function() {
                 table.button(0).trigger();
             });
 
-            $('#btn-print').on('click', function () {
+            $('#btn-print').on('click', function() {
                 table.button(1).trigger();
             });
         });

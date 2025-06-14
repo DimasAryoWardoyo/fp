@@ -24,11 +24,9 @@
         <div class="d-flex" id="wrapper" data-aos="fade-right">
             {{-- Sidebar --}}
             <div class="list-group list-group-flush" id="sidebar-wrapper">
-                <div class="sidebar-heading text-center py-3">
-                    <a href="{{ url('/') }}" >
-                        <img src="{{ url('/images/lg.png') }}" class="my-2" alt="Logo" style="max-width: 100px;">
-                    </a>
-                </div>
+                <a href="{{ url('/') }}" class="sidebar-heading text-center py-3">
+                    <img src="{{ url('/images/lg.png') }}" class="my-2" alt="Logo" style="max-width: 100px;">
+                </a>
                 <div class="list-group list-group-flush">
                     <a href="{{ route('dashboard') }}"
                         class="list-group-item list-group-item-action {{ request()->routeIs('dashboard') ? 'active' : '' }}">

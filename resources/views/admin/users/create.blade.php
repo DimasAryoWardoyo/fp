@@ -44,6 +44,34 @@
                             @enderror
                         </div>
 
+                         <div class="mb-3">
+                            <label>No WhatsApp</label>
+                            <input type="text" name="no_whatsapp" class="form-control @error('no_whatsapp') is-invalid @enderror" value="{{ old('no_whatsapp') }}">
+                            @error('no_whatsapp')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                                <label>Tanggal Lahir</label>
+                                <input type="date" name="tanggal_lahir" class="form-control">
+                            </div>
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select name="status" class="form-control">
+                                    <option value="aktif">Aktif</option>
+                                    <option value="tidak">Tidak</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Alasan</label>
+                            <select name="alasan" class="form-control">
+                                    <option value="">-</option>
+                                    <option value="sekolah di luar kota">Sekolah di luar kota</option>
+                                    <option value="bekerja di luar kota">Bekerja di luar kota</option>
+                            </select>
+                        </div>
+
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" id="password"

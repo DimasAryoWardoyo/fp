@@ -36,19 +36,11 @@ class IdentitasController extends Controller
 
     public function edit(Identitas $identitas)
     {
-        if (auth()->user()->id !== $identitas->user_id) {
-            abort(403);
-        }
-
         return view('identitas.edit', compact('identitas'));
     }
 
     public function update(Request $request, Identitas $identitas)
     {
-        if (auth()->user()->id !== $identitas->user_id) {
-            abort(403);
-        }
-
         $request->validate([
             'no_whatsapp' => 'required|string|max:20',
             'tanggal_lahir' => 'required|date',

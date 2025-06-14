@@ -43,7 +43,7 @@
                             <div class="card-body">
                                 <div class="dashboard-card-subtitle">
                                     Identitas
-                                    @if(Auth::user()->identitas)
+                                    @if (Auth::user()->identitas)
                                         <a href="{{ route('identitas.edit', Auth::user()->identitas->id) }}"
                                             class="btn btn-warning float-end me-2">Edit <i class="fa fa-pencil-square"
                                                 aria-hidden="true"></i></a>
@@ -67,17 +67,10 @@
                                             <td>
                                                 {{ Auth::user()->identitas->status ?? 'Belum diisi' }}
 
-                                                @if(Auth::user()->identitas && Auth::user()->identitas->status == 'tidak')
-                                                    <div class="dropdown d-inline ms-2">
-                                                        <button class="btn float-end btn-sm btn-info dropdown-toggle"
-                                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            Alasan
-                                                        </button>
-                                                        <ul class="dropdown-menu bg-warning">
-                                                            <li class="dropdown-item">
-                                                                {{ Auth::user()->identitas->alasan ?? 'Tidak ada alasan' }}
-                                                            </li>
-                                                        </ul>
+                                                @if (Auth::user()->identitas && Auth::user()->identitas->status == 'tidak')
+                                                    <div class="mt-2">
+                                                        <strong>Alasan:</strong>
+                                                        {{ Auth::user()->identitas->alasan ?? 'Tidak ada alasan' }}
                                                     </div>
                                                 @endif
                                             </td>

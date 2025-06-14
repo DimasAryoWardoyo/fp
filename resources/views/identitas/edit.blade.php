@@ -33,8 +33,10 @@
                             <div class="col-md-6 mb-3">
                                 <label>Status</label>
                                 <select name="status" class="form-control">
-                                    <option value="aktif" {{ $identitas->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="tidak" {{ $identitas->status == 'tidak' ? 'selected' : '' }}>Tidak</option>
+                                    <option value="aktif" {{ $identitas->status == 'aktif' ? 'selected' : '' }}>Aktif
+                                    </option>
+                                    <option value="tidak" {{ $identitas->status == 'tidak' ? 'selected' : '' }}>Tidak
+                                    </option>
                                 </select>
                             </div>
 
@@ -43,10 +45,12 @@
                                 <label>Alasan</label>
                                 <select name="alasan" class="form-control">
                                     <option value="">-</option>
-                                    <option value="sekolah di luar kota" {{ $identitas->alasan == 'sekolah di luar kota' ? 'selected' : '' }}>
+                                    <option value="sekolah di luar kota"
+                                        {{ $identitas->alasan == 'sekolah di luar kota' ? 'selected' : '' }}>
                                         Sekolah di luar kota
                                     </option>
-                                    <option value="bekerja di luar kota" {{ $identitas->alasan == 'bekerja di luar kota' ? 'selected' : '' }}>
+                                    <option value="bekerja di luar kota"
+                                        {{ $identitas->alasan == 'bekerja di luar kota' ? 'selected' : '' }}>
                                         Bekerja di luar kota
                                     </option>
                                 </select>

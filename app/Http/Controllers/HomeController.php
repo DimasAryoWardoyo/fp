@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agenda;
 use App\Models\Banner;
 use App\Models\Identitas;
 use App\Models\Kategori;
@@ -14,11 +15,19 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $events = Agenda::where('kategori', 'kegiatan')
+            ->whereDate('waktu_selesai', '>=', now())
+            ->orderBy('waktu_mulai', 'asc')
+            ->get()
+            ->filter(function ($agenda) {
+                return in_array($agenda->status, ['Akan Datang', 'Sedang Berlangsung']);
+            });
+
         // Ambil semua konten terbaru dan semua kategori
         $kontens = Konten::latest()->get();
         $kategoris = Kategori::all();
         $banners = Banner::all();
-        return view('page.home', compact('kontens', 'kategoris', 'banners'));
+        return view('page.home', compact('kontens', 'kategoris', 'banners', 'events'));
     }
 
     /**

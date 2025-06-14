@@ -36,16 +36,6 @@ class DashboardController extends Controller
             ->filter(function ($agenda) {
                 return in_array($agenda->status, ['Akan Datang', 'Sedang Berlangsung']);
             });
-
-
-
-        return view('dashboard.index', compact(
-            'totalPengeluaran',
-            'anggota',
-            'danaLain',
-            'totalKas',
-            'events'
-
-        ));
+        return view('dashboard.index', compact('totalPengeluaran', 'anggota', 'danaLain', 'totalKas', 'events'));
     }
 }

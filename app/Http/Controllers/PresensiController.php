@@ -13,29 +13,41 @@ class PresensiController extends Controller
     public function open($id)
     {
         $agenda = Agenda::findOrFail($id);
-        $user = Auth::user();
 
-        // Update status buka presensi
-        $agenda->update(['presensi_open' => true]);
+        // Cek waktu acara valid (opsional)
+        if (now()->lt($agenda->waktu_mulai) || now()->gt($agenda->waktu_selesai)) {
+            return redirect()->back()->with('error', 'Waktu presensi belum tersedia.');
+        }
 
-        // Admin langsung otomatis tercatat hadir
-        Presensi::updateOrCreate([
-            'agenda_id' => $agenda->id,
-            'user_id' => $user->id,
-        ], [
-            'waktu_presensi' => now(),
-            'token_yang_dipakai' => substr($agenda->generateToken(), 0, 6)
-        ]);
+        // Update agar presensi terbuka
+        $agenda->presensi_open = true;
+        $agenda->save();
 
-        return redirect()->back()->with('success', 'Presensi dibuka dan Anda tercatat hadir.');
+        // Admin auto presensi
+        Presensi::updateOrCreate(
+            [
+                'agenda_id' => $agenda->id,
+                'user_id' => Auth::id(),
+            ],
+            [
+                'waktu_presensi' => now(),
+                'token_yang_dipakai' => substr(str()->random(6), 0, 6),
+            ],
+        );
+
+        return redirect()->route('agenda.show', $agenda->id)->with('success', 'Presensi dibuka.');
     }
 
     // Admin menutup sesi presensi
     public function close($id)
     {
         $agenda = Agenda::findOrFail($id);
-        $agenda->update(['presensi_open' => false]);
-        return redirect()->back()->with('success', 'Presensi ditutup');
+
+        // Tutup presensi
+        $agenda->presensi_open = false;
+        $agenda->save();
+
+        return redirect()->route('agenda.show', $agenda->id)->with('success', 'Presensi telah ditutup.');
     }
 
     // Anggota melakukan presensi dengan validasi token
@@ -43,48 +55,58 @@ class PresensiController extends Controller
     {
         $agenda = Agenda::findOrFail($id);
 
-        if ($agenda->status !== 'Sedang Berlangsung' || !$agenda->presensi_open) {
-            return redirect()->back()->with('error', 'Agenda tidak sedang berlangsung atau presensi belum dibuka');
+        // Validasi status agenda dan presensi
+        if (now()->lt($agenda->waktu_mulai) || now()->gt($agenda->waktu_selesai) || !$agenda->presensi_open) {
+            return redirect()->back()->with('error', 'Presensi tidak tersedia saat ini.');
         }
 
         $request->validate([
-            'token' => 'required|string'
+            'token' => 'required|string',
         ]);
 
-        $validToken = substr($agenda->generateToken(), 0, 6); // gunakan 6 digit token
+        $validToken = substr($agenda->generateToken(), 0, 6);
 
         if ($request->token !== $validToken) {
-            return redirect()->back()->with('error', 'Token tidak valid atau sudah kadaluarsa');
+            return redirect()->back()->with('error', 'Token tidak valid atau sudah kedaluwarsa.');
         }
 
-        Presensi::updateOrCreate([
-            'agenda_id' => $agenda->id,
-            'user_id' => auth()->id(),
-        ], [
-            'waktu_presensi' => now(),
-            'token_yang_dipakai' => $request->token
-        ]);
+        Presensi::updateOrCreate(
+            [
+                'agenda_id' => $agenda->id,
+                'user_id' => Auth::id(),
+            ],
+            [
+                'waktu_presensi' => now(),
+                'token_yang_dipakai' => $request->token,
+            ],
+        );
 
-        return redirect()->back()->with('success', 'Presensi berhasil');
+        return redirect()->back()->with('success', 'Presensi berhasil dilakukan.');
     }
 
     // Menampilkan daftar presensi untuk admin
     public function index($id)
     {
         $agenda = Agenda::findOrFail($id);
-        $presensi = $agenda->presensis; // fix: gunakan relasi plural
+        $presensi = $agenda->presensis; // relasi presensis harus ada di model Agenda
+
         return view('presensi.index', compact('agenda', 'presensi'));
     }
 
-    // Form presensi anggota
+    // Form presensi untuk anggota
     public function form($id)
     {
         $agenda = Agenda::findOrFail($id);
 
-        // hanya bisa mengakses jika presensi sedang dibuka dan acara berlangsung
+        // Tutup otomatis jika waktu selesai sudah lewat
         if (now()->gt($agenda->waktu_selesai)) {
             $agenda->update(['presensi_open' => false]);
             return redirect()->back()->with('error', 'Presensi sudah berakhir.');
+        }
+
+        // Pastikan presensi sudah dibuka
+        if (!$agenda->presensi_open) {
+            return redirect()->back()->with('error', 'Presensi belum dibuka.');
         }
 
         return view('presensi.form', compact('agenda'));
