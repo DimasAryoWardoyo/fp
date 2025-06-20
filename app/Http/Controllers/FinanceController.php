@@ -33,28 +33,19 @@ class FinanceController extends Controller
         // saldo akhir
         $saldoAkhir = $totalKas + $saldoDanaLain;
 
-        
         $hutangs = Hutang::with('user')
             ->where('user_id', auth()->id())
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        return view('admin.finance.index', compact(
-            'kasSaya',
-            'totalKas',
-            'saldoDanaLain',
-            'pengeluaran',
-            'totalPengeluaran',
-            'saldoAkhir',
-            'hutangs'
-        ));
+        return view('admin.finance.index', compact('kasSaya', 'totalKas', 'saldoDanaLain', 'pengeluaran', 'totalPengeluaran', 'saldoAkhir', 'hutangs'));
     }
 
     // ============================== Kas Method ==============================
 
     public function createKas()
     {
-        $users = User::withSum('kas', 'jumlah')->get(); // pastikan relasi 'kas' dibuat
+        $users = User::withSum('kas', 'jumlah')->get();
         return view('admin.finance.create_kas', compact('users'));
     }
 
@@ -68,12 +59,12 @@ class FinanceController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric',
-            'users' => 'required|array',
+            // 'users' => 'required|array',
             'users.*' => 'exists:users,id',
         ]);
 
         $semuaUser = User::all();
-        $userYangBayar = collect($request->users)->map(fn($id) => (int) $id);
+        $userYangBayar = collect($request->input('users', []))->map(fn($id) => (int) $id);
         $tanggal = $request->tanggal;
         $jumlah = $request->jumlah;
 
@@ -97,8 +88,7 @@ class FinanceController extends Controller
             }
         }
 
-        return redirect()->route('admin.finance.index')
-            ->with('success', 'Kas dan hutang berhasil dicatat.');
+        return redirect()->route('admin.finance.index')->with('success', 'Kas dan hutang berhasil dicatat.');
     }
 
     // ============================== Hutang Method ==============================
@@ -180,9 +170,9 @@ class FinanceController extends Controller
         // Kurangi saldo dari sumber dana yang dipilih
         if ($request->sumber_dana === 'Kas') {
             Kas::create([
-                'user_id' => auth()->id(), // atau null jika tidak perlu
+                'user_id' => auth()->id(),
                 'tanggal' => $request->tanggal,
-                'jumlah' => -abs($request->jumlah), // dikurangi
+                'jumlah' => -abs($request->jumlah),
                 'deskripsi' => 'Pengeluaran: ' . $request->kegiatan,
             ]);
         } else {

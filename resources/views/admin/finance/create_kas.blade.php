@@ -12,7 +12,7 @@
                     <div class="col-md-12">
                         <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
-                                @if(session('success'))
+                                @if (session('success'))
                                     <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif
 
@@ -28,7 +28,11 @@
                                             <tr>
                                                 <th>Nama</th>
                                                 <th>Total Kas Masuk</th>
-                                                <th>Pilih Pembayar</th>
+                                                <th>
+                                                    Pilih Pembayar <br>
+                                                    <input type="checkbox" id="checkAll">
+                                                    <label for="checkAll">Sellect All</label>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -38,9 +42,11 @@
                                                     <td>Rp {{ number_format($user->kas_sum_jumlah ?? 0, 0, ',', '.') }}</td>
                                                     <td>
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="users[]"
-                                                                value="{{ $user->id }}" id="userCheck{{ $user->id }}">
-                                                            <label class="form-check-label" for="userCheck{{ $user->id }}">
+                                                            <input class="form-check-input user-checkbox" type="checkbox"
+                                                                name="users[]" value="{{ $user->id }}"
+                                                                id="userCheck{{ $user->id }}">
+                                                            <label class="form-check-label"
+                                                                for="userCheck{{ $user->id }}">
                                                                 Bayar
                                                             </label>
                                                         </div>
@@ -52,8 +58,8 @@
 
                                     <div class="mb-3">
                                         <label for="jumlah" class="form-label">Nominal Kas per Orang</label>
-                                        <input type="number" name="jumlah" id="jumlah" class="form-control" value="5000"
-                                            required>
+                                        <input type="number" name="jumlah" id="jumlah" class="form-control"
+                                            value="5000" required>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Simpan Kas</button>
@@ -67,4 +73,15 @@
             </div>
         </div>
     </div>
+
+    {{-- Tambahkan Script Select All --}}
+
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+    </script>
 @endsection
