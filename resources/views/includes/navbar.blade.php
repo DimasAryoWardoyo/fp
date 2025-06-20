@@ -46,9 +46,6 @@
                         </form>
                     </li>
                 @else
-                    <li class="nav-item {{ Request::is('register') ? 'active' : '' }}">
-                        <a href="{{ route('register') }}" class="nav-link">Sign Up</a>
-                    </li>
                     <li class="nav-item {{ Request::is('login') ? 'active' : '' }}">
                         <a href="{{ route('login') }}" class="btn btn-success nav-link px-4 text-white">Sign In</a>
                     </li>
@@ -82,9 +79,6 @@
                         </form>
                     </li>
                 @else
-                    <li class="nav-item {{ Request::is('register') ? 'active' : '' }}">
-                        <a href="{{ route('register') }}" class="nav-link">Sign Up</a>
-                    </li>
                     <li class="nav-item {{ Request::is('login') ? 'active' : '' }}">
                         <a href="{{ route('login') }}" class="btn btn-success nav-link px-4 text-white">Sign In</a>
                     </li>

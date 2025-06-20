@@ -96,7 +96,7 @@
         <section class="chefs section-bg mb-4">
             <div class="container" data-aos="fade-up">
                 <div class="section-header">
-                    <p>Kegiatan Yang Akan <span>Dilaksanakan</span></p>
+                    <h5>Kegiatan Yang Akan Dilaksanakan</h5>
                 </div>
                 <div class="row gy-4">
                     @php $incrementEvent = 0; @endphp

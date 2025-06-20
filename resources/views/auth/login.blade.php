@@ -50,9 +50,6 @@
                             <button type="submit" class="btn btn-success btn-block w-100 mt-4">
                                 Sign In to My Account
                             </button>
-                            <a href="{{ route('register') }}" class="btn btn-signup btn-block w-100 mt-2">
-                                Sign Up
-                            </a>
                         </form>
                     </div>
                 </div>
