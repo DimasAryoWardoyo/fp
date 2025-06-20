@@ -12322,4 +12322,105 @@ footer p {
   justify-content: center;
 }
 
+/*--------------------------------------------------------------
+# Chefs Section
+--------------------------------------------------------------*/
+.chefs .chef-member {
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 0 30px rgba(55, 55, 63, 0.08);
+  transition: 0.3s;
+}
+
+.chefs .chef-member .member-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.chefs .chef-member .member-img:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  background: url(../img/team-shape.svg) no-repeat center bottom;
+  background-size: contain;
+  z-index: 1;
+}
+
+.chefs .chef-member .social {
+  position: absolute;
+  right: -100%;
+  top: 30px;
+  opacity: 0;
+  border-radius: 4px;
+  transition: 0.5s;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 2;
+}
+
+.chefs .chef-member .social a {
+  transition: color 0.3s;
+  margin: 15px 12px;
+  display: block;
+  line-height: 0;
+  text-align: justify;
+}
+
+.chefs .chef-member .social a:hover {
+  color: rgba(55, 55, 63, 0.9);
+}
+
+.chefs .chef-member .social i {
+  font-size: 18px;
+}
+
+.chefs .chef-member .member-info {
+  padding: 10px 15px 0px 15px;
+}
+
+.chefs .chef-member .member-info h4 {
+  text-align: left;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.chefs .chef-member .member-info span {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #561C24;
+}
+
+.chefs .chef-member .member-info p {
+  text-align: justify;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #561C24;
+}
+
+.chefs .chef-member a {
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: #040505;
+}
+
+.chefs .chef-member a:hover {
+  color: #df1529;
+}
+
+.chefs .chef-member:hover {
+  transform: scale(1.08);
+  box-shadow: 0px 0 30px rgba(55, 55, 63, 0.15);
+}
+
+.chefs .chef-member:hover .social {
+  right: 8px;
+  opacity: 1;
+}
+
 /*# sourceMappingURL=main.css.map */
