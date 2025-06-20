@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,44 +12,59 @@
     @include('includes.style')
     @stack('addon-style')
 </head>
+
 <body>
     <div class="page-details mt-4">
         <section class="store-breadcrumbs" data-aos="fade-down" data-aos-delay="100">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <nav>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ url()->previous() }}" class="link-hover">
-                                        Kembali
-                                        </a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Breadcrumb kiri -->
+                            <nav>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ url()->previous() }}" class="link-hover">Kembali</a>
                                     </li>
-                                <li class="breadcrumb-item active">
-                                    {{ $konten->nama_konten }}
-                                </li>
-                            </ol>
-                        </nav>
+                                    <li class="breadcrumb-item active">{{ $konten->nama_konten }}</li>
+                                </ol>
+                            </nav>
+
+                            <!-- Logo kanan -->
+                            <a href="{{ url('/') }}" class="navbar-brand">
+                                <img src="{{ url('/images/lg.svg') }}" alt="Logo" style="height: 35px;">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="store-gallery" id="gallery">
+        <section class="store-gallery py-4" id="gallery">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8" data-aos="zoom-in">
-                        <transition name="slide-fade" mode="out-in">
-                            <img :src="photos[activePhoto].url" :key="photos[activePhoto].id" class="w-100 main-image" alt="">
-                        </transition>
+                    <!-- Gambar utama -->
+                    <div class="col-lg-8 mb-3" data-aos="zoom-in">
+                        <div class="main-image-wrapper border rounded overflow-hidden position-relative"
+                            style="height: 450px;">
+                            <transition name="slide-fade" mode="out-in">
+                                <img :src="photos[activePhoto].url" :key="photos[activePhoto].id"
+                                    class="w-100 h-100 object-fit-cover position-absolute top-0 start-0"
+                                    :alt="'Foto ' + activePhoto">
+                            </transition>
+                        </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="row">
-                            <div class="col-3 col-lg-12 mt-2 mt-lg-0" v-for="(photo, index) in photos" :key="photo.id" data-aos="zoom-in" data-aos-delay="100">
-                                <a href="#" @click.prevent="changeActive(index)">
-                                    <img :src="photo.url" class="w-100 thumbnail-image" :class="{ active: index == activePhoto }" alt="">
-                                </a>
-                            </div>
+
+                    <!-- Thumbnail -->
+                    <div class="col-lg-3 d-flex flex-column align-items-start justify-content-center"
+                        style="gap: 15px;">
+                        <div v-for="(photo, index) in photos" :key="photo.id"
+                            @click.prevent="changeActive(index)"
+                            class="border rounded overflow-hidden thumbnail-wrapper"
+                            :class="{ 'border-2 border-primary': index === activePhoto }"
+                            style="height: 130px; width: 200px; cursor: pointer;">
+                            <img :src="photo.url" class="w-100 h-100 object-fit-cover rounded"
+                                :alt="'Thumbnail ' + index">
                         </div>
                     </div>
                 </div>
@@ -96,8 +112,7 @@
             },
             data: {
                 activePhoto: 0,
-                photos: [
-                    {
+                photos: [{
                         id: 1,
                         url: "{{ asset('storage/' . $konten->gambar1) }}",
                     },
@@ -119,4 +134,5 @@
         });
     </script>
 </body>
+
 </html>

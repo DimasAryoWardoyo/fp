@@ -12,7 +12,7 @@
                 <div class="row">
 
                     {{-- Notifikasi --}}
-                    @if(session('success'))
+                    @if (session('success'))
                         <div class="col-12">
                             <div class="alert alert-success">
                                 {{ session('success') }}
@@ -21,39 +21,35 @@
                     @endif
 
                     {{-- Tombol Aksi --}}
-                    <div class="col-md-3 col-lg-3 mb-3">
+                    <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body text-center bg-success rounded">
-                                <a href="{{ route('admin.finance.kas.create') }}" class="btn btn-success w-100">
-                                    + add Kas
-                                </a>
+                            <div class="card-body d-grid p-2">
+                                <a href="{{ route('admin.finance.kas.create') }}" class="btn btn-success text-nowrap">+ Add
+                                    Kas</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-lg-3 mb-3">
+                    <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body text-center bg-warning rounded">
-                                <a href="{{ route('admin.finance.hutang') }}" class="btn btn-warning w-100">
-                                    Lihat hutang
-                                </a>
+                            <div class="card-body d-grid p-2">
+                                <a href="{{ route('admin.finance.hutang') }}" class="btn btn-warning text-nowrap">Lihat
+                                    Hutang</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-lg-3 mb-3">
+                    <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body text-center bg-primary rounded">
-                                <a href="{{ route('admin.finance.dana_lain.create') }}" class="btn btn-primary w-100">
-                                    + add Dana Lain
-                                </a>
+                            <div class="card-body d-grid p-2">
+                                <a href="{{ route('admin.finance.dana_lain.create') }}"
+                                    class="btn btn-primary text-nowrap">+ Add Dana Lain</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-lg-3 mb-3">
+                    <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body text-center bg-danger rounded">
-                                <a href="{{ route('admin.finance.pengeluaran.create') }}" class="btn btn-danger w-100">
-                                    + add Pengeluaran
-                                </a>
+                            <div class="card-body d-grid p-2">
+                                <a href="{{ route('admin.finance.pengeluaran.create') }}"
+                                    class="btn btn-danger text-nowrap">+ Add Pengeluaran</a>
                             </div>
                         </div>
                     </div>
@@ -150,7 +146,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">Belum ada data kas.</td>
+                                                    <td colspan="5" class="text-center text-muted">Belum ada data kas.
+                                                    </td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
@@ -179,11 +176,11 @@
                                                         @if ($item->bukti)
                                                             @php $ext = pathinfo($item->bukti, PATHINFO_EXTENSION); @endphp
                                                             @if (in_array($ext, ['jpg', 'jpeg', 'png']))
-                                                                <img src="{{ asset('storage/' . $item->bukti) }}" alt="Bukti"
-                                                                    width="100" class="img-thumbnail">
+                                                                <img src="{{ asset('storage/' . $item->bukti) }}"
+                                                                    alt="Bukti" width="100" class="img-thumbnail">
                                                             @else
-                                                                <a href="{{ asset('storage/' . $item->bukti) }}" target="_blank"
-                                                                    class="btn btn-sm btn-outline-primary">
+                                                                <a href="{{ asset('storage/' . $item->bukti) }}"
+                                                                    target="_blank" class="btn btn-sm btn-outline-primary">
                                                                     Lihat Bukti
                                                                 </a>
                                                             @endif
